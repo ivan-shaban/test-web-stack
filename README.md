@@ -54,9 +54,9 @@ These may be used for further challenges. You can freely skip these; feel free t
 
 Use HTML, CSS, and JavaScript (choose one of popular framework) to implement the following mock-up. You are only required to complete the desktop views, unless otherwise instructed. Application should connect to created GraphQL API.
 
-![Superformula-front-end-test-mockup](./mockup1.png)
+![Superformula-front-end-test-mockup](./docs/mockup1.png)
 
-![Superformula-front-end-test-mockup-2](./mockup2.png)
+![Superformula-front-end-test-mockup-2](./docs/mockup2.png)
 
 > [Source Figma file](https://www.figma.com/file/hd7EgdTxJs2fpTzzSKlNxo/Superformula-full-stack-test)
 
