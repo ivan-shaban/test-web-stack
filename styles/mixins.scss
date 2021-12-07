@@ -7,55 +7,55 @@
 }
 
 @mixin two_cards_small_min_gap {
-    @include two_cards_small_min_gap {
+    @media (min-width: $card_min_width * 2 + $card_min_gap + $min_offset) {
         @content;
     }
 }
 
 @mixin two_cards_small_max_gap {
-    @include two_cards_small_max_gap {
+    @media (min-width: $card_min_width * 2 + $card_max_gap + $max_offset) {
         @content;
     }
 }
 
 @mixin two_cards_big_max_gap {
-    @include two_cards_big_max_gap {
+    @media (min-width: $card_max_width * 2 + $card_max_gap + $max_offset) {
         @content;
     }
 }
 
 @mixin three_cards_small_min_gap {
-    @include three_cards_small_min_gap {
+    @media (min-width: $card_min_width * 3 + $card_min_gap * 2 + $min_offset) {
         @content;
     }
 }
 
 @mixin three_cards_small_max_gap {
-    @include three_cards_small_max_gap {
+    @media (min-width: $card_min_width * 3 + $card_max_gap * 2 + $max_offset) {
         @content;
     }
 }
 
 @mixin three_cards_big_max_gap {
-    @include three_cards_big_max_gap {
+    @media (min-width: $card_max_width * 3 + $card_max_gap * 2 + $max_offset) {
         @content;
     }
 }
 
 @mixin four_cards_small_min_gap {
-    @include four_cards_small_min_gap {
+    @media (min-width: $card_min_width * 4 + $card_min_gap * 3 + $min_offset) {
         @content;
     }
 }
 
 @mixin four_cards_small_max_gap {
-    @include four_cards_small_max_gap {
+    @media (min-width: $card_min_width * 4 + $card_max_gap * 3 + $max_offset) {
         @content;
     }
 }
 
 @mixin four_cards_big_max_gap {
-    @include four_cards_big_max_gap {
+    @media (min-width: $card_max_width * 4 + $card_max_gap * 3 + $max_offset) {
         @content;
     }
 }
