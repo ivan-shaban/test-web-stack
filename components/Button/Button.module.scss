@@ -1,0 +1,25 @@
+.base {
+    height: 90px;
+    background: #fff;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #000;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.5s, border-color 0.5s;
+
+    &:hover {
+        border-color: rgba(0, 0, 0, 0.4);
+    }
+
+    &:focus {
+        border-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &__disabled {
+        pointer-events: none;
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
