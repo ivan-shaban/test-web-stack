@@ -1,0 +1,78 @@
+.base {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 40px 32px;
+    transition: filter .5s;
+    filter: drop-shadow(0px 4px 10px transparent);
+    cursor: pointer;
+
+    &:hover {
+        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
+    }
+}
+
+.editIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity .3s, right .3s, top .3s;
+
+    .base:hover & {
+        opacity: 1;
+        top: 20px;
+        right: 20px;
+    }
+}
+
+.avatar {
+    align-self: center;
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    margin-bottom: 32px;
+}
+
+.credentials {
+    position: relative;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 21px;
+    color: #000;
+    margin-bottom: 8px;
+    white-space: nowrap;
+}
+
+.createdTitle {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    font-weight: 400;
+    font-size: 16px;
+    color: #000;
+    opacity: 0;
+    transition: opacity .5s;
+
+    .base:hover & {
+        opacity: 1;
+    }
+}
+
+.createdValue {
+    font-weight: 400;
+    font-size: 16px;
+    color: #980017;
+}
+
+.description {
+    font-size: 16px;
+    max-width: 213px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
