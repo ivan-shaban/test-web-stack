@@ -3,10 +3,10 @@ import {
     memo,
 } from 'react'
 import styles from './UserCard.module.scss'
-import {ClientUser} from '../../../../types/client'
+import {User} from 'graphql/generated/type-graphql/models/User'
 
 export interface Props {
-    readonly user: ClientUser
+    readonly user: User
 }
 
 export const UserCard: FC<Props> = memo(({user}) => {
@@ -30,4 +30,13 @@ export const UserCard: FC<Props> = memo(({user}) => {
             <p className={styles.description}>{user.description}</p>
         </div>
     )
+}, (prevProps, nextProps) => {
+    return prevProps.user.id === nextProps.user.id &&
+        prevProps.user.name === nextProps.user.name &&
+        prevProps.user.dob === nextProps.user.dob &&
+        prevProps.user.address === nextProps.user.address &&
+        prevProps.user.image === nextProps.user.image &&
+        prevProps.user.description === nextProps.user.description &&
+        prevProps.user.createdAt === nextProps.user.createdAt &&
+        prevProps.user.updatedAt === nextProps.user.updatedAt
 })
