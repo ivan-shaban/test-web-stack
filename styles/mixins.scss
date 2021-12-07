@@ -1,0 +1,61 @@
+@import "./variables";
+
+@mixin one_card {
+    @media (max-width: $card_min_width * 2 + $card_min_gap + $min_offset - 1px) {
+        @content;
+    }
+}
+
+@mixin two_cards_small_min_gap {
+    @include two_cards_small_min_gap {
+        @content;
+    }
+}
+
+@mixin two_cards_small_max_gap {
+    @include two_cards_small_max_gap {
+        @content;
+    }
+}
+
+@mixin two_cards_big_max_gap {
+    @include two_cards_big_max_gap {
+        @content;
+    }
+}
+
+@mixin three_cards_small_min_gap {
+    @include three_cards_small_min_gap {
+        @content;
+    }
+}
+
+@mixin three_cards_small_max_gap {
+    @include three_cards_small_max_gap {
+        @content;
+    }
+}
+
+@mixin three_cards_big_max_gap {
+    @include three_cards_big_max_gap {
+        @content;
+    }
+}
+
+@mixin four_cards_small_min_gap {
+    @include four_cards_small_min_gap {
+        @content;
+    }
+}
+
+@mixin four_cards_small_max_gap {
+    @include four_cards_small_max_gap {
+        @content;
+    }
+}
+
+@mixin four_cards_big_max_gap {
+    @include four_cards_big_max_gap {
+        @content;
+    }
+}

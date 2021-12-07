@@ -1,29 +1,129 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
 .base {
-    width: 960px;
+    min-width: $card_max_width + $min_offset;
     margin: 75px auto;
+
+    @include one_card {
+        width: $card_max_width;
+    }
+
+    @include four_cards_big_max_gap {
+        width: $card_max_width;
+    }
+
+    @include two_cards_small_min_gap {
+        width: $card_min_width * 2 + $card_min_gap;
+    }
+    @include two_cards_small_max_gap {
+        width: $card_min_width * 2 + $card_max_gap;
+    }
+    @include two_cards_big_max_gap {
+        width: $card_max_width * 2 + $card_max_gap;
+    }
+
+    @include three_cards_small_min_gap {
+        width: $card_min_width * 3 + $card_min_gap * 2;
+    }
+    @include three_cards_small_max_gap {
+        width: $card_min_width * 3 + $card_max_gap * 2;
+    }
+    @include three_cards_big_max_gap {
+        width: $card_max_width * 3 + $card_max_gap * 2;
+    }
+
+    @include four_cards_small_min_gap {
+        width: $card_min_width * 4 + $card_min_gap * 3;
+    }
+    @include four_cards_small_max_gap {
+        width: $card_min_width * 4 + $card_max_gap * 3;
+    }
+    @include four_cards_big_max_gap {
+        width: $card_max_width * 4 + $card_max_gap * 3;
+    }
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 75px 0;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-areas: "title" "search";
+    grid-template-columns: 1fr;
+    gap: $card_min_gap;
+    margin: $card_min_gap 0;
+
+    @include two_cards_small_min_gap {
+        margin: 75px 0;
+        grid-template-areas: "title search";
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include two_cards_small_max_gap {
+        gap: $card_max_gap;
+    }
+
+    @include three_cards_small_min_gap {
+        grid-template-areas: "title title search";
+        grid-template-columns: repeat(3, 1fr);
+        gap: $card_min_gap;
+    }
+    @include three_cards_small_max_gap {
+        gap: $card_max_gap;
+    }
+
+    @include four_cards_small_min_gap {
+        grid-template-areas: "title title title search";
+        grid-template-columns: repeat(4, 1fr);
+        gap: $card_min_gap;
+    }
+    @include four_cards_small_max_gap {
+        gap: $card_max_gap;
+    }
 }
 
 .title {
     font-size: 48px;
     color: #000;
+    grid-area: title;
 }
 
 .searchInput {
-    width: 400px;
+    grid-area: search;
 }
 
 .cardList {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 336px;
-    gap: 64px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: $card_max_height;
+    gap: $card_min_gap;
+
+    @include two_cards_small_min_gap {
+        grid-auto-rows: $card_min_height;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include two_cards_small_max_gap {
+        grid-auto-rows: $card_max_height;
+        gap: $card_max_gap;
+    }
+
+    @include three_cards_small_min_gap {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: $card_min_height;
+        gap: $card_min_gap;
+    }
+    @include three_cards_small_max_gap {
+        grid-auto-rows: $card_max_height;
+        gap: $card_max_gap;
+    }
+
+    @include four_cards_small_min_gap {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: $card_min_height;
+        gap: $card_min_gap;
+    }
+    @include four_cards_small_max_gap {
+        grid-auto-rows: $card_max_height;
+        gap: $card_max_gap;
+    }
 }
 
 .footer {

@@ -1,16 +1,43 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/variables";
+
+$min_padding: 20px 16px;
+$max_padding: 40px 32px;
+
 .base {
     position: relative;
     display: flex;
     flex-direction: column;
     border-radius: 8px;
     background-color: #fff;
-    padding: 40px 32px;
+    padding: $max_padding;
     transition: filter .5s;
     filter: drop-shadow(0px 4px 10px transparent);
     cursor: pointer;
 
     &:hover {
         filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
+    }
+
+    @include two_cards_small_min_gap {
+        padding: $min_padding;
+    }
+    @include two_cards_small_max_gap {
+        padding: $max_padding;
+    }
+
+    @include three_cards_small_min_gap {
+        padding: $min_padding;
+    }
+    @include three_cards_small_max_gap {
+        padding: $max_padding;
+    }
+
+    @include four_cards_small_min_gap {
+        padding: $min_padding;
+    }
+    @include four_cards_small_max_gap {
+        padding: $max_padding;
     }
 }
 
