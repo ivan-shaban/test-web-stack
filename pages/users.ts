@@ -1,7 +1,7 @@
 import {
     Props,
     UsersPage,
-} from '../components/pages/UsersPage'
+} from '../components/pages/users/UsersPage'
 import {GetServerSideProps} from 'next'
 import {
     addApolloState,

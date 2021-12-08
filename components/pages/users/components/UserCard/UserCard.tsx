@@ -9,15 +9,20 @@ import {User} from 'graphql/generated/type-graphql/models/User'
 export interface Props {
     readonly user: User
     readonly isDisabled?: boolean
+    readonly onClick: (user: User) => void
 }
 
-export const UserCard: FC<Props> = memo(({user, isDisabled}) => {
+export const UserCard: FC<Props> = memo(({user, isDisabled, onClick}) => {
     const createAt = new Date(user.dob).toLocaleDateString()
     const baseClasses = classNames(styles.base, {
         [styles.base__disabled]: isDisabled,
     })
+    const handleClick = () => {
+        onClick(user)
+    }
+
     return (
-        <div className={baseClasses}>
+        <div className={baseClasses} onClick={handleClick}>
             <img
                 className={styles.editIcon}
                 src="/static/icons/edit-icon.svg"

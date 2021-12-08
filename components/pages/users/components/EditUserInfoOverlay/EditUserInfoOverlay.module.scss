@@ -1,0 +1,119 @@
+@import "../../../../../styles/all";
+
+$default_margin: 16px;
+
+.layout {
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.base {
+    min-width: $card_max_width + $min_offset;
+    margin: 0 auto;
+    padding: $default_margin;
+    background: #f8f8f8;
+    border-radius: 8px;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
+
+    &__hasScroll {
+        overflow: visible;
+    }
+
+    @include one_card {
+        width: $card_max_width;
+    }
+
+    @include two_cards_small_min_gap {
+        width: $card_min_width * 2 + $card_min_gap;
+    }
+    @include two_cards_small_max_gap {
+        width: $card_min_width * 2 + $card_max_gap;
+        padding: $default_margin * 2;
+    }
+    @include two_cards_big_max_gap {
+        width: $card_max_width * 2 + $card_max_gap;
+        padding: $default_margin * 4;
+    }
+
+    @include three_cards_small_min_gap {
+        width: $card_min_width * 3 + $card_min_gap * 2;
+    }
+    @include three_cards_small_max_gap {
+        width: $card_min_width * 3 + $card_max_gap * 2;
+        padding: $default_margin * 2;
+    }
+    @include three_cards_big_max_gap {
+        width: $card_max_width * 3 + $card_max_gap * 2;
+        padding: $default_margin * 4;
+    }
+
+    @include four_cards_small_min_gap {
+        width: $card_min_width * 4 + $card_min_gap * 3;
+    }
+    @include four_cards_small_max_gap {
+        width: $card_min_width * 4 + $card_max_gap * 3;
+        padding: $default_margin * 2;
+    }
+    @include four_cards_big_max_gap {
+        width: $card_max_width * 4 + $card_max_gap * 3;
+        padding: $default_margin * 4;
+    }
+}
+
+.title {
+    font-size: 48px;
+    color: #000;
+}
+
+.main {
+    margin: $default_margin 0;
+
+    @include two_cards_small_max_gap {
+        margin: $default_margin * 2 0;
+    }
+    @include two_cards_big_max_gap {
+        margin: $default_margin * 4 0;
+    }
+
+    @include three_cards_small_max_gap {
+        margin: $default_margin * 2 0;
+    }
+    @include three_cards_big_max_gap {
+        margin: $default_margin * 4 0;
+    }
+
+    @include four_cards_small_max_gap {
+        margin: $default_margin * 2 0;
+    }
+    @include four_cards_big_max_gap {
+        margin: $default_margin * 4 0;
+    }
+}
+
+.label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+}
+
+.input {
+    display: block;
+    margin: 5px 0 30px;
+}
+
+.footer {
+    display: flex;
+    justify-content: right;
+
+    @include one_card {
+        flex-direction: column;
+    }
+}
+
+.saveButton {
+    margin: 0 $default_margin 0 0;
+
+    @include one_card {
+        margin: 0 0 $default_margin 0;
+    }
+}
