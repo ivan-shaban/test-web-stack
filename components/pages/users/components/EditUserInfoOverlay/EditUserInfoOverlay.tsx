@@ -63,5 +63,5 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll}) => {
                     </footer>
                 </div>
         </Layout>
-    ), document.getElementById('overlay-container'))
+    ), document.getElementById('overlay-container')!)
 })
