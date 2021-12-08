@@ -34,6 +34,7 @@ export const UsersPage: FC<Props> = memo(() => {
     const {
         data, error, loading, fetchMore,
     } = useQuery<{ users: User[] }, { take: number }>(GET_ALL_USERS_QUERY, {
+        errorPolicy: 'all',
         variables: {
             // @ts-ignore
             take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
@@ -54,6 +55,10 @@ export const UsersPage: FC<Props> = memo(() => {
 
     const handleCardClick = (user: User) => {
         setUserToEdit(user)
+    }
+
+    const handleOverlayClose = () => {
+        setUserToEdit(null)
     }
 
     const handleLoadMoreClick = useCallback(async () => {
@@ -79,10 +84,8 @@ export const UsersPage: FC<Props> = memo(() => {
 
     useEffect(() => {
         if (baseRef.current) {
-            console.log(`>> scroll:`, baseRef.current.scrollHeight > baseRef.current.clientHeight);
             setHasScroll(baseRef.current.scrollHeight > baseRef.current.clientHeight)
         } else {
-            console.log(`>> NO scroll:`);
             setHasScroll(false)
         }
     }, [baseRef.current, filteredData])
@@ -117,7 +120,13 @@ export const UsersPage: FC<Props> = memo(() => {
                         {loading ? 'Loading...' : 'LOAD MORE'}
                     </Button>
                 </footer>
-                {userToEdit && <EditUserInfoOverlay user={userToEdit} hasScroll={hasScroll}/>}
+                {userToEdit && (
+                    <EditUserInfoOverlay
+                        user={userToEdit}
+                        hasScroll={hasScroll}
+                        onClose={handleOverlayClose}
+                    />
+                )}
             </div>
         </Layout>
     )

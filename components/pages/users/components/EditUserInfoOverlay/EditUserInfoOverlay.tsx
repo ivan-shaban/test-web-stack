@@ -1,6 +1,9 @@
 import {
+    ChangeEvent,
     FC,
     memo,
+    useCallback,
+    useState,
 } from 'react'
 import classNames from 'classnames'
 import {User} from 'graphql/generated/type-graphql/models/User'
@@ -9,59 +12,119 @@ import {createPortal} from 'react-dom'
 import {Button} from '../../../../Button/Button'
 import {Input} from '../../../../Input/Input'
 import {Layout} from '../../../../Layout/Layout'
+import {useMutation} from '@apollo/client'
+import {
+    GET_ALL_USERS_QUERY,
+    UPDATE_USER_MUTATION,
+} from '../../../../../lib/apis/graphql'
+import {UpdateUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/UpdateUserArgs'
 
 export interface Props {
     readonly user: User
     readonly hasScroll?: boolean
+    readonly onClose: () => void
 }
 
-export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll}) => {
-    const baseClasses = classNames(styles.base, {
-        [styles.base__hasScroll]: hasScroll,
+export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) => {
+    const [username, setUserName] = useState(user.name)
+    const [userAddress, setUserAddress] = useState(user.address || '')
+    const [userDescription, setUserDescription] = useState(user.description)
+    const [updateUser, {loading, error}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+        refetchQueries: [
+            GET_ALL_USERS_QUERY,
+            'Users',
+        ],
     })
+    const layoutClasses = classNames(styles.layout, {
+        [styles.layout__hasScroll]: hasScroll,
+    })
+
+    const handleUserUpdate = useCallback(async () => {
+        try {
+            await updateUser({
+                variables: {
+                    data: {
+                        name: {
+                            set: username,
+                        },
+                        address: {
+                            set: userAddress,
+                        },
+                        description: {
+                            set: userDescription,
+                        },
+                    },
+                    where: {
+                        id: user.id,
+                    },
+                },
+            })
+            onClose()
+        } catch (e) {
+        }
+    }, [username, userAddress, userDescription, user.id])
+
+    const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setUserName(event.currentTarget.value)
+    }, [])
+
+    const handleUserAddressChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setUserAddress(event.currentTarget.value)
+    }, [])
+
+    const handleUserDescriptionChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setUserDescription(event.currentTarget.value)
+    }, [])
+
     return createPortal((
-        <Layout isAbsolute hasCenteredContent className={styles.layout}>
-            <div className={baseClasses}>
-                    <header className={styles.header}>
-                        <p className={styles.title}>Edit user</p>
-                    </header>
-                    <main className={styles.main}>
-                        <label htmlFor="depositInput" className={styles.label}>Name
-                            <Input className={styles.input}
-                                   type="text"
-                                   value={user.name}
-                            />
-                        </label>
-
-                        <label htmlFor="depositInput" className={styles.label}>Address
-                            <Input
-                                className={styles.input}
-                                type="text"
-                                value={user.address || ''}
-                            />
-                        </label>
-
-                        <label htmlFor="depositInput" className={styles.label}>Description
-                            <Input
-                                className={styles.input}
-                                type="text"
-                                value={user.description}
-                            />
-                        </label>
-                    </main>
-                    <footer className={styles.footer}>
-                        <Button
-                            className={styles.saveButton}
-                        >
-                            SAVE
-                        </Button>
-                        <Button
-                            className={styles.loadMoreButton}
-                        >
-                            CANCEL
-                        </Button>
-                    </footer>
-                </div>
+        <Layout isAbsolute hasCenteredContent className={layoutClasses}>
+            <div className={styles.base}>
+                <header className={styles.header}>
+                    <p className={styles.title}>Edit user</p>
+                    {!!error && <p className={styles.error}>Error: Cannot update user :(</p>}
+                </header>
+                <main className={styles.main}>
+                    <label htmlFor="depositInput" className={styles.label}>Name
+                        <Input className={styles.input}
+                               type="text"
+                               value={username}
+                               onChange={handleUserNameChange}
+                        />
+                    </label>
+                    <label htmlFor="depositInput" className={styles.label}>Address
+                        <Input
+                            className={styles.input}
+                            type="text"
+                            value={userAddress}
+                            onChange={handleUserAddressChange}
+                        />
+                    </label>
+                    <label htmlFor="depositInput" className={styles.label}>Description
+                        <Input
+                            className={styles.input}
+                            type="text"
+                            value={userDescription}
+                            onChange={handleUserDescriptionChange}
+                        />
+                    </label>
+                </main>
+                <footer className={styles.footer}>
+                    <Button
+                        className={styles.saveButton}
+                        isDisabled={loading}
+                        onClick={handleUserUpdate}
+                    >
+                        SAVE
+                    </Button>
+                    <Button
+                        className={styles.cancelButton}
+                        isDisabled={loading}
+                        onClick={onClose}
+                    >
+                        CANCEL
+                    </Button>
+                </footer>
+            </div>
         </Layout>
     ), document.getElementById('overlay-container')!)
 })
