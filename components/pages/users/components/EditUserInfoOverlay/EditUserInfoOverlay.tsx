@@ -5,6 +5,7 @@ import {
     useCallback,
     useState,
 } from 'react'
+import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames'
 import {User} from 'graphql/generated/type-graphql/models/User'
 import styles from './EditUserInfoOverlay.module.scss'
@@ -29,6 +30,7 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
     const [username, setUserName] = useState(user.name)
     const [userAddress, setUserAddress] = useState(user.address || '')
     const [userDescription, setUserDescription] = useState(user.description)
+    const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
     const [updateUser, {loading, error}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
         refetchQueries: [
             GET_ALL_USERS_QUERY,
@@ -38,6 +40,10 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
     const layoutClasses = classNames(styles.layout, {
         [styles.layout__hasScroll]: hasScroll,
     })
+
+    const handleClose = () => {
+        setExitAnimationStatus(false)
+    }
 
     const handleUserUpdate = useCallback(async () => {
         try {
@@ -59,7 +65,7 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                     },
                 },
             })
-            onClose()
+            handleClose()
         } catch (e) {
         }
     }, [username, userAddress, userDescription, user.id])
@@ -77,54 +83,63 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
     }, [])
 
     return createPortal((
-        <Layout isAbsolute hasCenteredContent className={layoutClasses}>
-            <div className={styles.base}>
-                <header className={styles.header}>
-                    <p className={styles.title}>Edit user</p>
-                    {!!error && <p className={styles.error}>Error: Cannot update user :(</p>}
-                </header>
-                <main className={styles.main}>
-                    <label htmlFor="depositInput" className={styles.label}>Name
-                        <Input className={styles.input}
-                               type="text"
-                               value={username}
-                               onChange={handleUserNameChange}
-                        />
-                    </label>
-                    <label htmlFor="depositInput" className={styles.label}>Address
-                        <Input
-                            className={styles.input}
-                            type="text"
-                            value={userAddress}
-                            onChange={handleUserAddressChange}
-                        />
-                    </label>
-                    <label htmlFor="depositInput" className={styles.label}>Description
-                        <Input
-                            className={styles.input}
-                            type="text"
-                            value={userDescription}
-                            onChange={handleUserDescriptionChange}
-                        />
-                    </label>
-                </main>
-                <footer className={styles.footer}>
-                    <Button
-                        className={styles.saveButton}
-                        isDisabled={loading}
-                        onClick={handleUserUpdate}
-                    >
-                        SAVE
-                    </Button>
-                    <Button
-                        className={styles.cancelButton}
-                        isDisabled={loading}
-                        onClick={onClose}
-                    >
-                        CANCEL
-                    </Button>
-                </footer>
-            </div>
-        </Layout>
+        <CSSTransition
+            in={playAppearingAnimation}
+            appear
+            timeout={500}
+            classNames="overlay-animation"
+            unmountOnExit
+            onExited={onClose}
+        >
+            <Layout isAbsolute hasCenteredContent className={layoutClasses}>
+                <div className={styles.base}>
+                    <header className={styles.header}>
+                        <p className={styles.title}>Edit user</p>
+                        {!!error && <p className={styles.error}>Error: Cannot update user :(</p>}
+                    </header>
+                    <main className={styles.main}>
+                        <label htmlFor="depositInput" className={styles.label}>Name
+                            <Input className={styles.input}
+                                   type="text"
+                                   value={username}
+                                   onChange={handleUserNameChange}
+                            />
+                        </label>
+                        <label htmlFor="depositInput" className={styles.label}>Address
+                            <Input
+                                className={styles.input}
+                                type="text"
+                                value={userAddress}
+                                onChange={handleUserAddressChange}
+                            />
+                        </label>
+                        <label htmlFor="depositInput" className={styles.label}>Description
+                            <Input
+                                className={styles.input}
+                                type="text"
+                                value={userDescription}
+                                onChange={handleUserDescriptionChange}
+                            />
+                        </label>
+                    </main>
+                    <footer className={styles.footer}>
+                        <Button
+                            className={styles.saveButton}
+                            isDisabled={loading}
+                            onClick={handleUserUpdate}
+                        >
+                            SAVE
+                        </Button>
+                        <Button
+                            className={styles.cancelButton}
+                            isDisabled={loading}
+                            onClick={handleClose}
+                        >
+                            CANCEL
+                        </Button>
+                    </footer>
+                </div>
+            </Layout>
+        </CSSTransition>
     ), document.getElementById('overlay-container')!)
 })
