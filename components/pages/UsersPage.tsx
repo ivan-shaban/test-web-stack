@@ -74,7 +74,7 @@ export const UsersPage: FC<Props> = memo(() => {
             </header>
             <main className={styles.cardList}>{
                 filteredData?.map((user) => (
-                    <UserCard user={user} key={user.id}/>
+                    <UserCard user={user} key={user.id} isDisabled={loading}/>
                 ))
             }</main>
             <footer className={styles.footer}>
@@ -83,7 +83,7 @@ export const UsersPage: FC<Props> = memo(() => {
                     onClick={onLoadMoreClick}
                     isDisabled={loading}
                 >
-                    LOAD MORE
+                    {loading ? 'Loading...' : 'LOAD MORE'}
                 </Button>
             </footer>
         </div>

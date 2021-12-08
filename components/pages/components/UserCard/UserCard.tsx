@@ -2,26 +2,33 @@ import {
     FC,
     memo,
 } from 'react'
+import classNames from 'classnames'
 import styles from './UserCard.module.scss'
 import {User} from 'graphql/generated/type-graphql/models/User'
 
 export interface Props {
     readonly user: User
+    readonly isDisabled?: boolean
 }
 
-export const UserCard: FC<Props> = memo(({user}) => {
+export const UserCard: FC<Props> = memo(({user, isDisabled}) => {
     const createAt = new Date(user.dob).toLocaleDateString()
+    const baseClasses = classNames(styles.base, {
+        [styles.base__disabled]: isDisabled,
+    })
     return (
-        <div className={styles.base}>
+        <div className={baseClasses}>
             <img
                 className={styles.editIcon}
                 src="/static/icons/edit-icon.svg"
                 alt="edit icon"
+                draggable="false"
             />
             <img
                 className={styles.avatar}
                 src={user.image}
                 alt={`${user.name}'s avatar`}
+                draggable="false"
             />
             <div className={styles.credentials}>
                 <p className={styles.title}>{user.name}</p>
