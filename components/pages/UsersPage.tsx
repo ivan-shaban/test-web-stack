@@ -1,7 +1,10 @@
 import {
+    ChangeEvent,
     FC,
     memo,
     useCallback,
+    useMemo,
+    useState,
 } from 'react'
 import styles from './UsersPage.module.scss'
 import {UserCard} from './components/UserCard/UserCard'
@@ -17,6 +20,7 @@ export interface Props {
 
 export const UsersPage: FC<Props> = memo(() => {
     const router = useRouter()
+    const [filterValue, setFilterValue] = useState('')
     const pageIndex = parseInt(router.query.page as string, 10) || 1
     const {
         data, error, loading, fetchMore,
@@ -26,6 +30,18 @@ export const UsersPage: FC<Props> = memo(() => {
             take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
         },
     })
+    const filteredData = useMemo(() => {
+        return filterValue ? data?.users.filter(({name, description, address}) => {
+            const lowered = filterValue.toLowerCase()
+            return name.toLowerCase().includes(lowered) ||
+                description.toLowerCase().includes(lowered) ||
+                address?.toLowerCase().includes(lowered)
+        }) : data?.users
+    }, [filterValue, data?.users])
+
+    const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setFilterValue(event.currentTarget.value)
+    }
 
     const onLoadMoreClick = useCallback(async () => {
         const newPageIndex = pageIndex + 1
@@ -42,7 +58,7 @@ export const UsersPage: FC<Props> = memo(() => {
         })
 
         // scroll back to load button
-        document.querySelector(`.${styles.loadMoreButton}`)?.scrollIntoView();
+        document.querySelector(`.${styles.loadMoreButton}`)?.scrollIntoView()
     }, [pageIndex])
 
     return (
@@ -52,10 +68,12 @@ export const UsersPage: FC<Props> = memo(() => {
                 <Input className={styles.searchInput}
                        type="search"
                        placeholder="Search..."
+                       value={filterValue}
+                       onChange={onInputChange}
                 />
             </header>
             <main className={styles.cardList}>{
-                data?.users.map((user) => (
+                filteredData?.map((user) => (
                     <UserCard user={user} key={user.id}/>
                 ))
             }</main>
