@@ -5,10 +5,14 @@
 }
 
 .base {
-    min-width: $card_max_width + $min_offset;
+    min-width: $card_min_width + $min_offset;
     margin: 75px auto;
 
-    @include one_card {
+    @include one_card_small {
+        width: $card_min_width + $min_offset;
+    }
+
+    @include one_card_big {
         width: $card_max_width;
     }
 
@@ -87,6 +91,7 @@
 
 .searchInput {
     grid-area: search;
+    width: 100%;
 }
 
 .cardList {

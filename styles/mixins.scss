@@ -1,7 +1,13 @@
 @import "./variables";
 
-@mixin one_card {
-    @media (max-width: $card_min_width * 2 + $card_min_gap + $min_offset - 1px) {
+@mixin one_card_small {
+    @media (max-width: $card_max_width + $min_offset - 1px) {
+        @content;
+    }
+}
+
+@mixin one_card_big {
+    @media (min-width: $card_max_width + $min_offset) and (max-width: $card_min_width * 2 + $card_min_gap + $min_offset - 1px) {
         @content;
     }
 }
