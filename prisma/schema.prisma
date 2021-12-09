@@ -19,7 +19,7 @@ model User {
   id          Int       @id @default(autoincrement())
   name        String
   dob         DateTime
-  address     String?
+  address     String
   image       String
   description String
   createdAt   DateTime  @default(now()) @map(name: "created_at")

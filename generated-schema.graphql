@@ -132,17 +132,6 @@ input NestedIntFilter {
   notIn: [Int!]
 }
 
-input NestedIntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
-  notIn: [Int!]
-}
-
 input NestedIntWithAggregatesFilter {
   _avg: NestedFloatFilter
   _count: NestedIntFilter
@@ -173,37 +162,6 @@ input NestedStringFilter {
   startsWith: String
 }
 
-input NestedStringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
-}
-
-input NestedStringNullableWithAggregatesFilter {
-  _count: NestedIntNullableFilter
-  _max: NestedStringNullableFilter
-  _min: NestedStringNullableFilter
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableWithAggregatesFilter
-  notIn: [String!]
-  startsWith: String
-}
-
 input NestedStringWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedStringFilter
@@ -219,10 +177,6 @@ input NestedStringWithAggregatesFilter {
   not: NestedStringWithAggregatesFilter
   notIn: [String!]
   startsWith: String
-}
-
-input NullableStringFieldUpdateOperationsInput {
-  set: String
 }
 
 type Query {
@@ -256,37 +210,6 @@ input StringFilter {
   startsWith: String
 }
 
-input StringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
-}
-
-input StringNullableWithAggregatesFilter {
-  _count: NestedIntNullableFilter
-  _max: NestedStringNullableFilter
-  _min: NestedStringNullableFilter
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableWithAggregatesFilter
-  notIn: [String!]
-  startsWith: String
-}
-
 input StringWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedStringFilter
@@ -305,7 +228,7 @@ input StringWithAggregatesFilter {
 }
 
 type User {
-  address: String
+  address: String!
   createdAt: DateTime!
   description: String!
   dob: DateTime!
@@ -347,7 +270,7 @@ input UserCountOrderByAggregateInput {
 }
 
 input UserCreateInput {
-  address: String
+  address: String!
   createdAt: DateTime
   description: String!
   dob: DateTime!
@@ -362,7 +285,7 @@ type UserGroupBy {
   _max: UserMaxAggregate
   _min: UserMinAggregate
   _sum: UserSumAggregate
-  address: String
+  address: String!
   createdAt: DateTime!
   description: String!
   dob: DateTime!
@@ -458,7 +381,7 @@ input UserScalarWhereWithAggregatesInput {
   AND: [UserScalarWhereWithAggregatesInput!]
   NOT: [UserScalarWhereWithAggregatesInput!]
   OR: [UserScalarWhereWithAggregatesInput!]
-  address: StringNullableWithAggregatesFilter
+  address: StringWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   description: StringWithAggregatesFilter
   dob: DateTimeWithAggregatesFilter
@@ -477,7 +400,7 @@ input UserSumOrderByAggregateInput {
 }
 
 input UserUpdateInput {
-  address: NullableStringFieldUpdateOperationsInput
+  address: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   dob: DateTimeFieldUpdateOperationsInput
@@ -487,7 +410,7 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyMutationInput {
-  address: NullableStringFieldUpdateOperationsInput
+  address: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   dob: DateTimeFieldUpdateOperationsInput
@@ -500,7 +423,7 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  address: StringNullableFilter
+  address: StringFilter
   createdAt: DateTimeFilter
   description: StringFilter
   dob: DateTimeFilter

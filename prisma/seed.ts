@@ -36,6 +36,7 @@ type MockUserData = {
 
 async function main() {
     const totalUsersCount = 30
+
     // here we get only 10 users, so we will map them to unique avatars
     const {data: users} = await axios.get<MockUserData[]>('https://jsonplaceholder.typicode.com/users')
     const result = await unsplashAPI.photos.getRandom({
@@ -43,13 +44,16 @@ async function main() {
         query: 'avatars',
     })
     const images = Array.isArray(result.response) ? result.response! : [result.response!]
+
+    // cleanup db
+    await prisma.user.deleteMany()
     const usersToInit = images.map(({urls: {raw}}, index) => {
         const user = users[index % 10]
         return prisma.user.create({
             data: {
                 name: user.name,
                 dob: new Date('1990-01-01'),
-                address: user.address.street,
+                address: `${user.address.city}, ${user.address.street}`,
                 image: `${raw}&fm=jpg&w=168&h=168&fit=crop`,
                 description: user.company.catchPhrase,
             },
