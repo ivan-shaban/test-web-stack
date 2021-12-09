@@ -50,5 +50,6 @@ export const UserCard: FC<Props> = memo(({user, isDisabled, onClick}) => {
         prevProps.user.image === nextProps.user.image &&
         prevProps.user.description === nextProps.user.description &&
         prevProps.user.createdAt === nextProps.user.createdAt &&
-        prevProps.user.updatedAt === nextProps.user.updatedAt
+        prevProps.user.updatedAt === nextProps.user.updatedAt &&
+        prevProps.isDisabled === nextProps.isDisabled
 })

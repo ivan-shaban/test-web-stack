@@ -32,7 +32,7 @@ export const UsersPage: FC<Props> = memo(() => {
     const baseRef = useRef<HTMLDivElement>(null)
 
     const {
-        data, error, loading, fetchMore,
+        data, fetchMore
     } = useQuery<{ users: User[] }, { take: number }>(GET_ALL_USERS_QUERY, {
         errorPolicy: 'all',
         variables: {
@@ -48,6 +48,8 @@ export const UsersPage: FC<Props> = memo(() => {
                 address?.toLowerCase().includes(lowered)
         }) : data?.users
     }, [filterValue, data?.users])
+    // somehow `loading` from grahpql doesn't work well
+    const [isLoading, setLoadingState] = useState(!data?.users?.length)
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFilterValue(event.currentTarget.value)
@@ -62,21 +64,25 @@ export const UsersPage: FC<Props> = memo(() => {
     }
 
     const handleLoadMoreClick = useCallback(async () => {
+        setLoadingState(true)
+
         const newPageIndex = pageIndex + 1
 
         await router.push({
             query: {page: newPageIndex.toString()},
         }, undefined, {shallow: true})
-
         await fetchMore({
             variables: {
                 // @ts-ignore
                 take: newPageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
             },
         })
+        setLoadingState(false)
 
         // scroll back to load button
-        document.querySelector(`.${styles.loadMoreButton}`)?.scrollIntoView()
+        document.getElementById('loadMoreButton')?.scrollIntoView({
+            behavior: 'smooth',
+        })
     }, [pageIndex])
     const baseClasses = classNames(styles.base, {
         [styles.base__withOverlay]: !!userToEdit,
@@ -107,17 +113,18 @@ export const UsersPage: FC<Props> = memo(() => {
                         <UserCard
                             user={user}
                             key={user.id}
-                            isDisabled={loading}
+                            isDisabled={isLoading}
                             onClick={handleCardClick}
                         />
                     ))
                 }</main>
                 <footer className={styles.footer}>
                     <Button
+                        id="loadMoreButton"
                         onClick={handleLoadMoreClick}
-                        isDisabled={loading}
+                        isDisabled={isLoading}
                     >
-                        {loading ? 'Loading...' : 'LOAD MORE'}
+                        {isLoading ? 'Loading...' : 'LOAD MORE'}
                     </Button>
                 </footer>
                 {userToEdit && (
