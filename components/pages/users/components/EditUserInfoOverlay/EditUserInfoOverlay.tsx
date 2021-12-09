@@ -5,7 +5,7 @@ import {
     useCallback,
     useState,
 } from 'react'
-import { CSSTransition } from 'react-transition-group';
+import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import {User} from 'graphql/generated/type-graphql/models/User'
 import styles from './EditUserInfoOverlay.module.scss'
@@ -20,6 +20,8 @@ import {
 } from '../../../../../lib/apis/graphql'
 import {UpdateUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/UpdateUserArgs'
 
+import {GoogleMap} from '../GoogleMap/GoogleMap'
+
 export interface Props {
     readonly user: User
     readonly hasScroll?: boolean
@@ -28,10 +30,12 @@ export interface Props {
 
 export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) => {
     const [username, setUserName] = useState(user.name)
-    const [userAddress, setUserAddress] = useState(user.address || '')
+    const [userAddress, setUserAddress] = useState(user.address)
     const [userDescription, setUserDescription] = useState(user.description)
+    const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
     const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
-    const [updateUser, {loading, error}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+    const [updateUser, {loading, error: gqlError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+        awaitRefetchQueries: true,
         refetchQueries: [
             GET_ALL_USERS_QUERY,
             'Users',
@@ -82,6 +86,10 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
         setUserDescription(event.currentTarget.value)
     }, [])
 
+    const handleMapError = useCallback((message: string | null) => {
+        setMapErrorMessage(message)
+    }, [])
+
     return createPortal((
         <CSSTransition
             in={playAppearingAnimation}
@@ -95,32 +103,40 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                 <div className={styles.base}>
                     <header className={styles.header}>
                         <p className={styles.title}>Edit user</p>
-                        {!!error && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!gqlError && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!mapErrorMessage && <p className={styles.error}>Error: {mapErrorMessage} :(</p>}
                     </header>
                     <main className={styles.main}>
-                        <label htmlFor="depositInput" className={styles.label}>Name
-                            <Input className={styles.input}
-                                   type="text"
-                                   value={username}
-                                   onChange={handleUserNameChange}
-                            />
-                        </label>
-                        <label htmlFor="depositInput" className={styles.label}>Address
-                            <Input
-                                className={styles.input}
-                                type="text"
-                                value={userAddress}
-                                onChange={handleUserAddressChange}
-                            />
-                        </label>
-                        <label htmlFor="depositInput" className={styles.label}>Description
-                            <Input
-                                className={styles.input}
-                                type="text"
-                                value={userDescription}
-                                onChange={handleUserDescriptionChange}
-                            />
-                        </label>
+                        <GoogleMap className={styles.map}
+                                   address={userAddress}
+                                   onAddressChange={setUserAddress}
+                                   onError={handleMapError}
+                        />
+                        <div className={styles.inputsBlock}>
+                            <label className={styles.label}>Name
+                                <Input className={styles.input}
+                                       type="text"
+                                       value={username}
+                                       onChange={handleUserNameChange}
+                                />
+                            </label>
+                            <label className={styles.label}>Address
+                                <Input
+                                    className={styles.input}
+                                    type="text"
+                                    value={userAddress}
+                                    onChange={handleUserAddressChange}
+                                />
+                            </label>
+                            <label className={styles.label}>Description
+                                <Input
+                                    className={styles.input}
+                                    type="text"
+                                    value={userDescription}
+                                    onChange={handleUserDescriptionChange}
+                                />
+                            </label>
+                        </div>
                     </main>
                     <footer className={styles.footer}>
                         <Button

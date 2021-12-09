@@ -3,13 +3,10 @@
 $default_margin: 16px;
 
 .layout {
+    display: block !important;
     background-color: rgba(0, 0, 0, 0);
     transition: background-color 500ms;
-    overflow: hidden;
-
-    &__hasScroll {
-        padding-right: 15px;
-    }
+    overflow: auto;
 
     &:global(.overlay-animation-appear-active), &:global(.overlay-animation-appear-done) {
         background-color: rgba(0, 0, 0, 0.3);
@@ -18,11 +15,21 @@ $default_margin: 16px;
     &:global(.overlay-animation-exit) {
         background-color: rgba(0, 0, 0, 0);
     }
+
+    @include two_cards_big_max_gap {
+        display: flex !important;
+    }
+
+    @include three_cards_small_max_gap {
+        &__hasScroll {
+            padding-right: 15px;
+        }
+    }
 }
 
 .base {
     min-width: $card_max_width + $min_offset;
-    margin: 0 auto;
+    margin: 75px auto;
     padding: $default_margin;
     background: #f8f8f8;
     border-radius: 8px;
@@ -58,6 +65,7 @@ $default_margin: 16px;
     @include two_cards_big_max_gap {
         width: $card_max_width * 2 + $card_max_gap;
         padding: $default_margin * 4;
+        margin: 0 auto;
     }
 
     @include three_cards_small_min_gap {
@@ -97,12 +105,15 @@ $default_margin: 16px;
 }
 
 .main {
+    display: flex;
+    flex-direction: column;
     margin: $default_margin 0;
 
     @include two_cards_small_max_gap {
         margin: $default_margin * 2 0;
     }
     @include two_cards_big_max_gap {
+        flex-direction: row;
         margin: $default_margin * 4 0;
     }
 
@@ -121,6 +132,45 @@ $default_margin: 16px;
     }
 }
 
+.map {
+    height: 300px;
+    margin-bottom: $default_margin;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+
+    @include two_cards_small_max_gap {
+        margin-bottom: $default_margin * 2;
+    }
+    @include two_cards_big_max_gap {
+        margin-bottom: 0;
+        margin-right: $default_margin * 4;
+        width: calc(100% - 280px * 2 - $default_margin * 8);
+        height: auto;
+    }
+
+    @include three_cards_small_max_gap {
+        margin-right: $default_margin * 2;
+        width: calc(100% - 280px * 2 - $default_margin * 4);
+    }
+    @include three_cards_big_max_gap {
+        margin-right: $default_margin * 4;
+        width: calc(100% - 280px * 2 - $default_margin * 8);
+    }
+
+    @include four_cards_small_max_gap {
+        margin-right: $default_margin * 2;
+        width: calc(100% - 280px * 2 - $default_margin * 4);
+    }
+    @include four_cards_big_max_gap {
+        margin-right: $default_margin * 4;
+        width: calc(100% - 280px * 2 - $default_margin * 8);
+    }
+}
+
+.inputsBlock {
+    flex-grow: 2;
+}
+
 .label {
     font-size: 18px;
     font-weight: 600;
@@ -130,6 +180,11 @@ $default_margin: 16px;
 .input {
     display: block;
     margin: 5px 0 30px;
+    width: 100%;
+
+    .label:last-child & {
+        margin-bottom: 0;
+    }
 }
 
 .footer {
@@ -146,5 +201,26 @@ $default_margin: 16px;
 
     @include one_card {
         margin: 0 0 $default_margin 0;
+    }
+
+    @include two_cards_small_max_gap {
+        margin-right: $default_margin * 2;
+    }
+    @include two_cards_big_max_gap {
+        margin-right: $default_margin * 4;
+    }
+
+    @include three_cards_small_max_gap {
+        margin-right: $default_margin * 2;
+    }
+    @include three_cards_big_max_gap {
+        margin-right: $default_margin * 4;
+    }
+
+    @include four_cards_small_max_gap {
+        margin-right: $default_margin * 2;
+    }
+    @include four_cards_big_max_gap {
+        margin-right: $default_margin * 4;
     }
 }
