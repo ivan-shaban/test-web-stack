@@ -1,32 +1,40 @@
 import {
-  ComponentMeta,
-  ComponentStory,
+    ComponentMeta,
+    ComponentStory,
 } from '@storybook/react'
-import {Button} from './Button'
+import {
+    Button,
+    ButtonType,
+} from './Button'
 import React from 'react'
 import './Button.stories.scss'
 
 export default {
-  title: 'superformula/Button',
-  component: Button,
-} as ComponentMeta<typeof Button>;
+    title: 'superformula/Button',
+    component: Button,
+} as ComponentMeta<typeof Button>
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({})
 Primary.args = {
-  children: 'label',
-};
+    children: 'label',
+}
 
-export const WithCustomClassName = Template.bind({});
+export const Danger = Template.bind({})
+Danger.args = {
+    type: ButtonType.Danger,
+    children: 'label',
+}
+
+export const WithCustomClassName = Template.bind({})
 WithCustomClassName.args = {
-  className: 'testButton',
-  children: 'label',
-};
+    className: 'testButton',
+    children: 'label',
+}
 
-export const Disabled = Template.bind({});
+export const Disabled = Template.bind({})
 Disabled.args = {
-  isDisabled: true,
-  children: 'label',
-};
+    isDisabled: true,
+    children: 'label',
+}

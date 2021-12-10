@@ -7,12 +7,24 @@ import {
 import classNames from 'classnames'
 import styles from './Button.module.scss'
 
-export interface Props extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>{
-    readonly isDisabled?:boolean
+export enum ButtonType {
+    Primary = 'primary',
+    Danger = 'danger',
 }
 
-export const Button: FC<Props> = memo(({className, isDisabled, children, ...restProps}) => {
-    const baseClasses = classNames(styles.base, className, {
+export interface Props extends Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'type'> {
+    readonly isDisabled?: boolean
+    readonly type?: ButtonType
+}
+
+export const Button: FC<Props> = memo(({
+                                           className,
+                                           isDisabled,
+                                           type = ButtonType.Primary,
+                                           children,
+                                           ...restProps
+                                       }) => {
+    const baseClasses = classNames(styles.base, styles[`base__${type}`], className, {
         [styles.base__disabled]: isDisabled,
     })
     return (
