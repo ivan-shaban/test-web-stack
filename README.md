@@ -1,132 +1,93 @@
-# Superformula Web Developer Test
+### Original task
 
-Be sure to read **all** of this document carefully, and follow the guidelines within.
+You can find original task description [here](./docs/README.md)
 
-While this README assumes you implement both backend and frontend, only frontend context is required if you apply for Front-end position. To better showcase your skills and experience we encourage you to complete both "UI Context" and "Backend Context" parts depending on your time availability. In case you decide not to implement backend according to spec, feel free to implement mock api to accompany your frontend work.
+### Tech stack description
 
-## Backend Context
+I partly implemented backend part, because i'm curious for full stack development.
 
-Build a GraphQL API that can `create/read/update` user data from a persistence store. Delete functionality is not required.
+Project use next solutions:
 
-### User Model
+- Typescript
+- Nextjs
+- Prisma
+- GraphQL: Apollo server \ client
+- Google Maps
+- SQLite
+- SASS
+- Jest \ Enzyme
+
+I had chosen `typescript` because it allows to describe complex types, match them with each other, has great community and has a lot of integrations with different libraries.
+
+I have use `Nextjs` as primary framework, because it uses React as view lib and allows to easily define simple backend endpoints, what i need to use `graphql`
+
+`prisma` was chosen as db agnostic orm which has good support and features, also it used to generate `graphql` resolvers and schemas, because we need crud api for our db
+
+`sqlite` was chosen because it is simple to use and reliable for our purpose
+
+`sass` was chosen to extend basic css features and simplify complex layouts description
+
+`jest \ enzyme` were chosen because they are simple, popular and has great community support, also some tests (snapshots \ unit test) may overlap testing functionality, but it is just to show that we may use different ways to test something
+
+### How to run code
+
+First, you need to set up your local `.env` file with variables, you use may `.env.example` as template.
+
+Project has `js` based stack, so just install dependencies with:
 
 ```
-{
-  "id": "xxx",                  // user ID (must be unique)
-  "name": "backend test",       // user name
-  "dob": "",                    // date of birth
-  "address": "",                // user address
-  "description": "",            // user description
-  "createdAt": ""               // user created date
-  "updatedAt": ""               // user updated date
-}
+yarn
 ```
 
-### Functionality
+and run:
 
-- The API should follow typical GraphQL API design pattern
-- The data should be saved in the DB
-- Proper error handling should be used
-- Paginating and filtering (by name) users list
+```
+yarn dev
+```
 
-### Basic Requirements
+also you may open prisma studio to inspect db, to run it, just execute:
 
-  - Use **AWS AppSync (preferred)** or AWS Lambda + API Gateway approach
-  - Use any AWS Database-as-a-Service persistence store. DynamoDB is preferred.
-  - Write concise and clear commit messages
-  - Write clear **documentation** on how it has been designed and how to run the code
-  - Add a Query to fetch location information based off the user's address (use [NASA](https://api.nasa.gov/api.html) or [Mapbox](https://www.mapbox.com/api-documentation/) APIs); use AWS Lambda
+```
+yarn prisma:studio
+```
 
-### Bonus (in order)
-  1. Use Infrastructure-as-code tooling that can be used to deploy all resources to an AWS account. Examples: CloudFormation / SAM, Terraform, Serverless Framework, etc.
-  1. Provide proper unit tests
-  1. Providing an online demo is welcomed, but not required
-  1. Delete user functionality
-  1. Bundle npm modules into your Lambdas
+to run tests, just execute:
 
-### Advanced Requirements
+```
+yarn test:ci
+```
 
-These may be used for further challenges. You can freely skip these; feel free to try out if you feel up to it.
-  - Describe your strategy for Lambda error handling, retries, and DLQs
-  - Describe your cloud-native logging, monitoring, and alarming strategy across all queries/mutations
 
-## UI context
+### Under the hood
 
-Use HTML, CSS, and JavaScript (choose one of popular framework) to implement the following mock-up. You are only required to complete the desktop views, unless otherwise instructed. Application should connect to created GraphQL API.
+`unsplash` api used only when we seed db and only to get random avatar images.
 
-![Superformula-front-end-test-mockup](./docs/mockup1.png)
+`apollo client` used both, at server and at client sides, but with different logic.
 
-![Superformula-front-end-test-mockup-2](./docs/mockup2.png)
+Not all interfaces has error \ loading states, only few of them, because it is test task neither production ready implementation.
 
-> [Source Figma file](https://www.figma.com/file/hd7EgdTxJs2fpTzzSKlNxo/Superformula-full-stack-test)
+I didn't set up any linters because it wasn't mentioned in task description and my IDE has predefined code styles for me.
 
-## Requirements
+I choose SSR generation over SSG, because users data is not persistent, and we may modify it, so SSG has no sense.
 
-### Functionality
+After we render page at server side, we fill `graphql` client cache with data to avoid unnecessary requests.
 
-- The search functionality should perform real time filtering on client side data and API side data
-- List of users should be updated automatically after single user is updated
-- Create modal from scratch - please don't use any library for it
-- Appear/Disappear of modal should be animated (feel free with choose how)
-- Infinite loading state should be saved in url query (pagination state should be present in URL query (eg ?page=1) to allow for behavior where the user can reload the page while still returning to their current scroll position)
+Pagination logic based on prisma api.
 
-### Tech stack
+Users filtering has only client side implementation, it based on `name`, `description` and `address` fields from user model.
 
-- JS oriented (Typescript preferred)
-- Use **React**, **Angular** or **VUE** (React preferred)
-- Use unsplash.com to show random avatar images
-- You don't have to write configuration from scratch (you can use eg. CRA for React application)
-- Feel free to use a preprocessor like SASS/SCSS/Less or CSS in JS
-- Provide E2E and unit tests (one component&view well tested is enough, no need to test every component/view)
-- Please **do not** use any additional libraries with predefined styles like `react-bootstrap`, `material-ui` etc.
+After we load additional users data, we force browser to scroll to `load more` button, to left smooth user experience.
 
-### Bonus (in order)
+I prevent user input operations during data loading processes and overlay animations.
 
-1. Write clear **documentation** on how the app was designed and how to run the code
-1. Providing an online demo is welcomed, but not required.
-1. Provide a description of how you approach mobile friendly apps (what do you use, how)
-1. Write concise and clear commit messages.
-1. Provide components in [Storybook](https://storybook.js.org) with tests.
-1. Include subtle animations to focus attention
-1. Describe optimization opportunities when you conclude
-1. Map with user location should update async - when user changes "location" field (feel free to choose MAPS service e.g. GoogleMaps, OpenStreetMap)
-1. Handle server errors
-1. Handle loading states
-1. Delete user functionality
+### Mobile optimizations
 
-## What We Care About
+All layouts are adaptive and should look good on mobile screens.
 
-Use any libraries that you would normally use if this were a real production App. Please note: we're interested in your code & the way you solve the problem, not how well you can use a particular library or feature.
+### Possible improvements
 
-_We're interested in your method and how you approach the problem just as much as we're interested in the end result._
-
-Here's what you should strive for:
-
-- Good use of current HTML, CSS, JavaScript, Node.js & performance best practices.
-- Solid testing approach.
-- Extensible code.
-
-## Q&A
-> Where should I send back the result when I'm done?
-
-Fork this repo and send us a pull request when you think you are done. There is no deadline for this task unless otherwise noted to you directly.
-
-> What if I have a question?
-
-Create a new issue in this repo and we will respond and get back to you quickly.
-
-> Should I validate inputs?
-
-Please assume a hard requirement has not been set by the product owner. We welcome any input validations and your reasoning for why they add value.
-
-> What is the location format?
-
-Examples:
-- Seattle, Washington
-- Digital Nomad
-- New Jersey
-- Northern Bergen County, NJ
-
-> I almost finished, but I don't have time to create everything what is required
-
-Please provide a plan for the rest of the things that you would do.
+- introduce any state manager, to increase project scalability and components decomposition
+- add `pwa` support, and tune concrete application props in manifest file
+- add script linting rules and unify code style in whole team
+- add precommit hooks for additional validation and linting
+- restrict apollo client
