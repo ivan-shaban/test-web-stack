@@ -1,0 +1,355 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default 1`] = `
+<Layout
+  className="layout"
+  isAbsolute={true}
+>
+  <div
+    className="base"
+  >
+    <header
+      className="header"
+    >
+      <p
+        className="title"
+      >
+        Users list
+      </p>
+      <Input
+        className="searchInput"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="search"
+        value=""
+      />
+    </header>
+    <main
+      className="cardList"
+    />
+    <footer
+      className="footer"
+    >
+      <Button
+        id="loadMoreButton"
+        isDisabled={true}
+        onClick={[Function]}
+      >
+        Loading...
+      </Button>
+    </footer>
+  </div>
+</Layout>
+`;
+
+exports[`should render "loading" state 1`] = `
+<Layout
+  className="layout"
+  isAbsolute={true}
+>
+  <div
+    className="base"
+  >
+    <header
+      className="header"
+    >
+      <p
+        className="title"
+      >
+        Users list
+      </p>
+      <Input
+        className="searchInput"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="search"
+        value=""
+      />
+    </header>
+    <main
+      className="cardList"
+    >
+      <UserCard
+        isDisabled={true}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "minsk",
+            "description": "Multi-layered client-server neural-net",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 91,
+            "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Leanne Grahama",
+          }
+        }
+      />
+      <UserCard
+        isDisabled={true}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "South Christy, Norberto Crossing",
+            "description": "Synchronised bottom-line interface",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 92,
+            "image": "https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Mrs. Dennis Schulist",
+          }
+        }
+      />
+    </main>
+    <footer
+      className="footer"
+    >
+      <Button
+        id="loadMoreButton"
+        isDisabled={true}
+        onClick={[Function]}
+      >
+        Loading...
+      </Button>
+    </footer>
+  </div>
+</Layout>
+`;
+
+exports[`should render cards 1`] = `
+<Layout
+  className="layout"
+  isAbsolute={true}
+>
+  <div
+    className="base"
+  >
+    <header
+      className="header"
+    >
+      <p
+        className="title"
+      >
+        Users list
+      </p>
+      <Input
+        className="searchInput"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="search"
+        value=""
+      />
+    </header>
+    <main
+      className="cardList"
+    >
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "minsk",
+            "description": "Multi-layered client-server neural-net",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 91,
+            "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Leanne Grahama",
+          }
+        }
+      />
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "South Christy, Norberto Crossing",
+            "description": "Synchronised bottom-line interface",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 92,
+            "image": "https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Mrs. Dennis Schulist",
+          }
+        }
+      />
+    </main>
+    <footer
+      className="footer"
+    >
+      <Button
+        id="loadMoreButton"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        LOAD MORE
+      </Button>
+    </footer>
+  </div>
+</Layout>
+`;
+
+exports[`should render overlay 1`] = `
+<Layout
+  className="layout"
+  isAbsolute={true}
+>
+  <div
+    className="base base__withOverlay"
+  >
+    <header
+      className="header"
+    >
+      <p
+        className="title"
+      >
+        Users list
+      </p>
+      <Input
+        className="searchInput"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="search"
+        value=""
+      />
+    </header>
+    <main
+      className="cardList"
+    >
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "minsk",
+            "description": "Multi-layered client-server neural-net",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 91,
+            "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Leanne Grahama",
+          }
+        }
+      />
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "South Christy, Norberto Crossing",
+            "description": "Synchronised bottom-line interface",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 92,
+            "image": "https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Mrs. Dennis Schulist",
+          }
+        }
+      />
+    </main>
+    <footer
+      className="footer"
+    >
+      <Button
+        id="loadMoreButton"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        LOAD MORE
+      </Button>
+    </footer>
+    <EditUserInfoOverlay
+      hasScroll={false}
+      onClose={[Function]}
+      user={
+        Object {
+          "address": "minsk",
+          "description": "Multi-layered client-server neural-net",
+          "dob": "1990-01-01T00:00:00.000Z",
+          "id": 91,
+          "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+          "name": "Leanne Grahama",
+        }
+      }
+    />
+  </div>
+</Layout>
+`;
+
+exports[`should render overlay with scroll 1`] = `
+<Layout
+  className="layout"
+  isAbsolute={true}
+>
+  <div
+    className="base base__withOverlay"
+  >
+    <header
+      className="header"
+    >
+      <p
+        className="title"
+      >
+        Users list
+      </p>
+      <Input
+        className="searchInput"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="search"
+        value=""
+      />
+    </header>
+    <main
+      className="cardList"
+    >
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "minsk",
+            "description": "Multi-layered client-server neural-net",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 91,
+            "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Leanne Grahama",
+          }
+        }
+      />
+      <UserCard
+        isDisabled={false}
+        onClick={[Function]}
+        user={
+          Object {
+            "address": "South Christy, Norberto Crossing",
+            "description": "Synchronised bottom-line interface",
+            "dob": "1990-01-01T00:00:00.000Z",
+            "id": 92,
+            "image": "https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+            "name": "Mrs. Dennis Schulist",
+          }
+        }
+      />
+    </main>
+    <footer
+      className="footer"
+    >
+      <Button
+        id="loadMoreButton"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        LOAD MORE
+      </Button>
+    </footer>
+    <EditUserInfoOverlay
+      hasScroll={true}
+      onClose={[Function]}
+      user={
+        Object {
+          "address": "minsk",
+          "description": "Multi-layered client-server neural-net",
+          "dob": "1990-01-01T00:00:00.000Z",
+          "id": 91,
+          "image": "https://images.unsplash.com/photo-1626038135427-bd4eb8193ba5?ixid=MnwyODEwMzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzkwNTc3NTc&ixlib=rb-1.2.1&fm=jpg&w=168&h=168&fit=crop",
+          "name": "Leanne Grahama",
+        }
+      }
+    />
+  </div>
+</Layout>
+`;

@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots default 1`] = `
+<div
+  className="base"
+  onClick={[Function]}
+>
+  <img
+    alt="edit icon"
+    className="editIcon"
+    draggable="false"
+    src="/static/icons/edit-icon.svg"
+  />
+  <img
+    alt="name's avatar"
+    className="avatar"
+    draggable="false"
+    src="image"
+  />
+  <div
+    className="credentials"
+  >
+    <p
+      className="title"
+    >
+      name
+    </p>
+    <p
+      className="createdTitle"
+    >
+      created 
+      <span
+        className="createdValue"
+      >
+        01.01.1990
+      </span>
+    </p>
+  </div>
+  <p
+    className="description"
+  >
+    description
+  </p>
+</div>
+`;
+
+exports[`snapshots with disabled state 1`] = `
+<div
+  className="base base__disabled"
+  onClick={[Function]}
+>
+  <img
+    alt="edit icon"
+    className="editIcon"
+    draggable="false"
+    src="/static/icons/edit-icon.svg"
+  />
+  <img
+    alt="name's avatar"
+    className="avatar"
+    draggable="false"
+    src="image"
+  />
+  <div
+    className="credentials"
+  >
+    <p
+      className="title"
+    >
+      name
+    </p>
+    <p
+      className="createdTitle"
+    >
+      created 
+      <span
+        className="createdValue"
+      >
+        01.01.1990
+      </span>
+    </p>
+  </div>
+  <p
+    className="description"
+  >
+    description
+  </p>
+</div>
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default 1`] = `
+<button
+  className="base base__primary"
+  type="button"
+/>
+`;
+
+exports[`in disabled state 1`] = `
+<button
+  className="base base__primary base__disabled"
+  type="button"
+/>
+`;
+
+exports[`with custom css class 1`] = `
+<button
+  className="base base__primary test"
+  type="button"
+/>
+`;
+
+exports[`with danger type 1`] = `
+<button
+  className="base base__danger"
+  type="button"
+/>
+`;
+
+exports[`with primary type 1`] = `
+<button
+  className="base base__primary"
+  type="button"
+/>
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshots default 1`] = `
+<div
+  className="base"
+/>
+`;
+
+exports[`snapshots with absolute layout 1`] = `
+<div
+  className="base base__isAbsolute"
+/>
+`;
+
+exports[`snapshots with centered content 1`] = `
+<div
+  className="base base__hasCenteredContent"
+/>
+`;
+
+exports[`snapshots with custom css class 1`] = `
+<div
+  className="base test"
+/>
+`;

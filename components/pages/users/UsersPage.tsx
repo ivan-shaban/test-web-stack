@@ -19,11 +19,12 @@ import {GET_ALL_USERS_QUERY} from '../../../lib/apis/graphql'
 import {User} from 'graphql/generated/type-graphql/models/User'
 import {EditUserInfoOverlay} from './components/EditUserInfoOverlay/EditUserInfoOverlay'
 import {Layout} from '../../Layout/Layout'
+import {FindManyUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/FindManyUserArgs'
 
 export interface Props {
 }
 
-export const UsersPage: FC<Props> = memo(() => {
+export const UsersPageOriginal: FC<Props> = () => {
     const router = useRouter()
     const [filterValue, setFilterValue] = useState('')
     const [userToEdit, setUserToEdit] = useState<User | null>(null)
@@ -33,8 +34,9 @@ export const UsersPage: FC<Props> = memo(() => {
 
     const {
         data, fetchMore
-    } = useQuery<{ users: User[] }, { take: number }>(GET_ALL_USERS_QUERY, {
+    } = useQuery<{ users: User[] }, FindManyUserArgs>(GET_ALL_USERS_QUERY, {
         errorPolicy: 'all',
+        notifyOnNetworkStatusChange: true,
         variables: {
             // @ts-ignore
             take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
@@ -42,17 +44,16 @@ export const UsersPage: FC<Props> = memo(() => {
     })
     const filteredData = useMemo(() => {
         return filterValue ? data?.users.filter(({name, description, address}) => {
-            const lowered = filterValue.toLowerCase()
-            return name.toLowerCase().includes(lowered) ||
-                description.toLowerCase().includes(lowered) ||
-                address?.toLowerCase().includes(lowered)
+            return name.toLowerCase().includes(filterValue) ||
+                description.toLowerCase().includes(filterValue) ||
+                address?.toLowerCase().includes(filterValue)
         }) : data?.users
     }, [filterValue, data?.users])
-    // somehow `loading` from grahpql doesn't work well
+    // somehow `loading \ networkStatus` from grahpql doesn't work well, despite `notifyOnNetworkStatusChange: true`
     const [isLoading, setLoadingState] = useState(!data?.users?.length)
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setFilterValue(event.currentTarget.value)
+        setFilterValue(event.currentTarget.value.toLowerCase())
     }
 
     const handleCardClick = (user: User) => {
@@ -79,7 +80,7 @@ export const UsersPage: FC<Props> = memo(() => {
         })
         setLoadingState(false)
 
-        // scroll back to load button
+        // scroll back to load button, to force smooth ux
         document.getElementById('loadMoreButton')?.scrollIntoView({
             behavior: 'smooth',
         })
@@ -137,4 +138,6 @@ export const UsersPage: FC<Props> = memo(() => {
             </div>
         </Layout>
     )
-})
+}
+
+export const UsersPage = memo(UsersPageOriginal)
