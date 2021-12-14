@@ -1,7 +1,7 @@
-import prisma from '../lib/prisma'
+import prisma from '../src/lib/prisma'
 import {config} from 'dotenv'
 import axios from 'axios'
-import {unsplashAPI} from '../lib/apis/unsplash'
+import {unsplashAPI} from '../src/lib/apis/unsplash'
 
 const result = config()
 

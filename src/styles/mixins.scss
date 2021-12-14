@@ -1,4 +1,4 @@
-@import "./variables";
+@import "variables";
 
 @mixin one_card_small {
     @media (max-width: $card_max_width + $min_offset - 1px) {
