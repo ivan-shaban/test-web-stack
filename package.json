@@ -4,8 +4,8 @@
   "scripts": {
     "prisma:generate-client": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
-    "storybook:start": "start-storybook -p 6006 --static-dir ./public",
-    "storybook:build": "build-storybook --static-dir public",
+    "storybook:start": "start-storybook -p 6006",
+    "storybook:build": "build-storybook",
     "postinstall": "npm run prisma:generate-client",
     "predev": "npm run prisma:generate-client",
     "dev": "next dev",

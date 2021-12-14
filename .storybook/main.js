@@ -1,8 +1,9 @@
 module.exports = {
-    "stories": [
+    staticDirs: ['../public',],
+    stories: [
         "../src/**/*.stories.@(js|jsx|ts|tsx)"
     ],
-    "addons": [
+    addons: [
         {
             name: '@storybook/preset-scss',
             options: {
@@ -16,8 +17,8 @@ module.exports = {
         "@storybook/addon-links",
         "@storybook/addon-essentials"
     ],
-    "framework": "@storybook/react",
-    "core": {
-        "builder": "webpack5"
+    framework: "@storybook/react",
+    core: {
+        builder: "webpack5"
     }
 };
