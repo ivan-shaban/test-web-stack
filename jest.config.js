@@ -23,7 +23,7 @@ const customJestConfig = {
 module.exports = async (params) => {
     const config = await createJestConfig(customJestConfig)(params);
     // little hack for nextjs to hoist jest `mock`s
-    config.transform['^.+\\.(js|jsx|ts|tsx)$'] = ['babel-jest', { configFile: './jest.babel.config.js' }];
+    config.transform['^.+\\.(js|jsx|ts|tsx)$'] = ['babel-jest', { presets: ["next/babel"] }];
 
     return config;
 };
