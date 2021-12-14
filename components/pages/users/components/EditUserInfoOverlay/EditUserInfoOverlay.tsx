@@ -10,17 +10,22 @@ import classNames from 'classnames'
 import {User} from 'graphql/generated/type-graphql/models/User'
 import styles from './EditUserInfoOverlay.module.scss'
 import {createPortal} from 'react-dom'
-import {Button} from '../../../../Button/Button'
+import {
+    Button,
+    ButtonType,
+} from '../../../../Button/Button'
 import {Input} from '../../../../Input/Input'
 import {Layout} from '../../../../Layout/Layout'
 import {useMutation} from '@apollo/client'
 import {
+    DELETE_USER_MUTATION,
     GET_ALL_USERS_QUERY,
     UPDATE_USER_MUTATION,
 } from '../../../../../lib/apis/graphql'
 import {UpdateUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/UpdateUserArgs'
 
 import {GoogleMap} from '../GoogleMap/GoogleMap'
+import {DeleteUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/DeleteUserArgs'
 
 export interface Props {
     readonly user: User
@@ -34,7 +39,15 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
     const [userDescription, setUserDescription] = useState(user.description)
     const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
     const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
-    const [updateUser, {loading, error: gqlError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+    const saveButtonEnabled = username !== user.name || userAddress !== user.address || userDescription !== user.description
+    const [updateUser, {loading: userUpdateInProgress, error: userUpdateError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+        awaitRefetchQueries: true,
+        refetchQueries: [
+            GET_ALL_USERS_QUERY,
+            'Users',
+        ],
+    })
+    const [deleteUser, {loading: userDeleteInProgress, error: deleteUserError}] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
         awaitRefetchQueries: true,
         refetchQueries: [
             GET_ALL_USERS_QUERY,
@@ -74,6 +87,20 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
         }
     }, [username, userAddress, userDescription, user.id])
 
+    const handleUserDelete = useCallback(async () => {
+        try {
+            await deleteUser({
+                variables: {
+                    where: {
+                        id: user.id,
+                    },
+                },
+            })
+            handleClose()
+        } catch (e) {
+        }
+    }, [user.id])
+
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.currentTarget.value)
     }, [])
@@ -103,7 +130,8 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                 <div className={styles.base}>
                     <header className={styles.header}>
                         <p className={styles.title}>Edit user</p>
-                        {!!gqlError && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!userUpdateError && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!deleteUserError && <p className={styles.error}>Error: Cannot delete user :(</p>}
                         {!!mapErrorMessage && <p className={styles.error}>Error: {mapErrorMessage} :(</p>}
                     </header>
                     <main className={styles.main}>
@@ -140,15 +168,23 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                     </main>
                     <footer className={styles.footer}>
                         <Button
+                            className={styles.deleteButton}
+                            type={ButtonType.Danger}
+                            isDisabled={userUpdateInProgress || userDeleteInProgress}
+                            onClick={handleUserDelete}
+                        >
+                            DELETE
+                        </Button>
+                        <Button
                             className={styles.saveButton}
-                            isDisabled={loading}
+                            isDisabled={(userUpdateInProgress || userDeleteInProgress) || !saveButtonEnabled}
                             onClick={handleUserUpdate}
                         >
                             SAVE
                         </Button>
                         <Button
                             className={styles.cancelButton}
-                            isDisabled={loading}
+                            isDisabled={userUpdateInProgress || userDeleteInProgress}
                             onClick={handleClose}
                         >
                             CANCEL

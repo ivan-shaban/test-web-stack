@@ -194,30 +194,16 @@ $default_margin: 16px;
 .footer {
     display: flex;
     justify-content: right;
+    flex-direction: column;
 
-    @include one_card_small {
-        flex-direction: column;
-    }
-
-    @include one_card_big {
-        flex-direction: column;
+    @include two_cards_big_max_gap {
+        flex-direction: row;
     }
 }
 
-.saveButton {
-    margin: 0 $default_margin 0 0;
+.saveButton, .deleteButton {
+    margin: 0 0 $default_margin 0;
 
-    @include one_card_small {
-        margin: 0 0 $default_margin 0;
-    }
-
-    @include one_card_big {
-        margin: 0 0 $default_margin 0;
-    }
-
-    @include two_cards_small_max_gap {
-        margin-right: $default_margin * 2;
-    }
     @include two_cards_big_max_gap {
         margin-right: $default_margin * 4;
     }

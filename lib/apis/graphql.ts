@@ -22,3 +22,11 @@ export const UPDATE_USER_MUTATION = gql`
         }
     }
 `
+
+export const DELETE_USER_MUTATION = gql`
+    mutation Mutation($where: UserWhereUniqueInput!) {
+        deleteUser(where: $where) {
+            id
+        }
+    }
+`
