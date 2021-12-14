@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "superformulatesttask",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "D:\\Work\\interviews\\test-web-stack2\\amplify\\backend\\api\\superformulatesttask\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authsuperformulatesttask85346012"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2022-12-14T19:50:04.995Z",
+        "keyDescription": ""
+      }
+    ]
+  }
+}

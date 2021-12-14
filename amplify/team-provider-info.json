@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-superformulatesttask-dev-224312-authRole",
+      "UnauthRoleArn": "arn:aws:iam::190178587087:role/amplify-superformulatesttask-dev-224312-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::190178587087:role/amplify-superformulatesttask-dev-224312-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-superformulatesttask-dev-224312-deployment",
+      "UnauthRoleName": "amplify-superformulatesttask-dev-224312-unauthRole",
+      "StackName": "amplify-superformulatesttask-dev-224312",
+      "StackId": "arn:aws:cloudformation:eu-north-1:190178587087:stack/amplify-superformulatesttask-dev-224312/1a631ed0-5d16-11ec-9a1f-0e95a23d909e",
+      "AmplifyAppId": "dqbuvrmhkmfka"
+    },
+    "categories": {
+      "auth": {
+        "superformulatesttask85346012": {}
+      }
+    }
+  }
+}
