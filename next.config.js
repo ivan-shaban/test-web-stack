@@ -5,6 +5,16 @@ module.exports = {
     distDir: process.env.NODE_ENV === 'production'
         ? 'build'
         : '.next',
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+      // !! WARN !!
+      // Dangerously allow production builds to successfully complete even if
+      // your project has type errors.
+      // !! WARN !!
+      ignoreBuildErrors: true,
+    },
     async redirects() {
         return [
             {
