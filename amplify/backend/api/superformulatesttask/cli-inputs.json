@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "superformulatesttask",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "D:\\Work\\interviews\\test-web-stack2\\amplify\\backend\\api\\superformulatesttask\\schema.graphql",
+    "gqlSchemaPath": "C:\\Work\\test-tasks\\superformula\\amplify\\backend\\api\\superformulatesttask\\schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authsuperformulatesttask85346012"

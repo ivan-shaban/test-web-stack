@@ -84,7 +84,7 @@ export const UsersPageOriginal: FC<Props> = () => {
         document.getElementById('loadMoreButton')?.scrollIntoView({
             behavior: 'smooth',
         })
-    }, [pageIndex])
+    }, [pageIndex, fetchMore, router])
     const baseClasses = classNames(styles.base, {
         [styles.base__withOverlay]: !!userToEdit,
     })
@@ -95,7 +95,7 @@ export const UsersPageOriginal: FC<Props> = () => {
         } else {
             setHasScroll(false)
         }
-    }, [baseRef.current, filteredData])
+    }, [baseRef, filteredData])
 
     return (
         <Layout isAbsolute className={styles.layout} ref={baseRef}>

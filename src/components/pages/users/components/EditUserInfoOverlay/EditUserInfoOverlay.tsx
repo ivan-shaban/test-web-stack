@@ -85,7 +85,7 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
             handleClose()
         } catch (e) {
         }
-    }, [username, userAddress, userDescription, user.id])
+    }, [updateUser, username, userAddress, userDescription, user.id])
 
     const handleUserDelete = useCallback(async () => {
         try {
@@ -99,7 +99,7 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
             handleClose()
         } catch (e) {
         }
-    }, [user.id])
+    }, [deleteUser, user.id])
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.currentTarget.value)

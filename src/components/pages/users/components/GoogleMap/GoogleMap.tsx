@@ -98,7 +98,7 @@ export const GoogleMap: FC<Props> = memo(({className, address, onError, onAddres
             debouncedAddressRequest.cancel()
             debouncedDoubleClickHandler.cancel()
         }
-    }, [map, google, address])
+    }, [map, google, address, localAddress, onAddressChange, onError])
 
     const baseClasses = classNames(styles.base, className, {
         [styles.base__disabled]: isLoading,
