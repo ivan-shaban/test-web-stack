@@ -8,6 +8,7 @@ export const getUser = /* GraphQL */ `
       id
       name
       dob
+      image
       address
       description
       createdAt
@@ -26,6 +27,7 @@ export const listUsers = /* GraphQL */ `
         id
         name
         dob
+        image
         address
         description
         createdAt

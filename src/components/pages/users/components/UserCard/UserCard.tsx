@@ -4,7 +4,7 @@ import {
 } from 'react'
 import classNames from 'classnames'
 import styles from './UserCard.module.scss'
-import {User} from 'graphql/generated/type-graphql/models/User'
+import {User} from '../../../../../API'
 
 export interface Props {
     readonly user: User

@@ -1,5 +1,18 @@
 import gql from 'graphql-tag'
 
+export const getAllUsers = /* GraphQL */ `
+    query MyQuery {
+        listUsers {
+            items {
+                id
+                address
+                dob
+                name
+            }
+        }
+    }
+`
+
 export const GET_ALL_USERS_QUERY = gql`
     query Users($take: Int) {
         users(take: $take) {

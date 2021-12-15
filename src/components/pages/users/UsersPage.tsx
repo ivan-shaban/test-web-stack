@@ -14,17 +14,15 @@ import {UserCard} from './components/UserCard/UserCard'
 import {Input} from '../../Input/Input'
 import {Button} from '../../Button/Button'
 import {useRouter} from 'next/router'
-import {useQuery} from '@apollo/client'
-import {GET_ALL_USERS_QUERY} from '../../../lib/apis/graphql'
-import {User} from 'graphql/generated/type-graphql/models/User'
 import {EditUserInfoOverlay} from './components/EditUserInfoOverlay/EditUserInfoOverlay'
 import {Layout} from '../../Layout/Layout'
-import {FindManyUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/FindManyUserArgs'
+import {User} from '../../../API'
 
 export interface Props {
+    readonly users: Readonly<User>[]
 }
 
-export const UsersPageOriginal: FC<Props> = () => {
+export const UsersPageOriginal: FC<Props> = ({users}) => {
     const router = useRouter()
     const [filterValue, setFilterValue] = useState('')
     const [userToEdit, setUserToEdit] = useState<User | null>(null)
@@ -32,25 +30,25 @@ export const UsersPageOriginal: FC<Props> = () => {
     const pageIndex = parseInt(router.query.page as string, 10) || 1
     const baseRef = useRef<HTMLDivElement>(null)
 
-    const {
-        data, fetchMore
-    } = useQuery<{ users: User[] }, FindManyUserArgs>(GET_ALL_USERS_QUERY, {
-        errorPolicy: 'all',
-        notifyOnNetworkStatusChange: true,
-        variables: {
-            // @ts-ignore
-            take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
-        },
-    })
+    // const {
+    //     data, fetchMore
+    // } = useQuery<{ users: User[] }, FindManyUserArgs>(GET_ALL_USERS_QUERY, {
+    //     errorPolicy: 'all',
+    //     notifyOnNetworkStatusChange: true,
+    //     variables: {
+    //         // @ts-ignore
+    //         take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
+    //     },
+    // })
     const filteredData = useMemo(() => {
-        return filterValue ? data?.users.filter(({name, description, address}) => {
+        return filterValue ? users.filter(({name, description, address}) => {
             return name.toLowerCase().includes(filterValue) ||
                 description.toLowerCase().includes(filterValue) ||
-                address?.toLowerCase().includes(filterValue)
-        }) : data?.users
-    }, [filterValue, data?.users])
+                address.toLowerCase().includes(filterValue)
+        }) : users
+    }, [filterValue, users])
     // somehow `loading \ networkStatus` from grahpql doesn't work well, despite `notifyOnNetworkStatusChange: true`
-    const [isLoading, setLoadingState] = useState(!data?.users?.length)
+    const [isLoading, setLoadingState] = useState(!users?.length)
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFilterValue(event.currentTarget.value.toLowerCase())
@@ -72,19 +70,20 @@ export const UsersPageOriginal: FC<Props> = () => {
         await router.push({
             query: {page: newPageIndex.toString()},
         }, undefined, {shallow: true})
-        await fetchMore({
-            variables: {
-                // @ts-ignore
-                take: newPageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
-            },
-        })
+        // await fetchMore({
+        //     variables: {
+        //         // @ts-ignore
+        //         take: newPageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
+        //     },
+        // })
         setLoadingState(false)
 
         // scroll back to load button, to force smooth ux
         document.getElementById('loadMoreButton')?.scrollIntoView({
             behavior: 'smooth',
         })
-    }, [pageIndex, fetchMore, router])
+    }, [pageIndex, router])
+    // }, [pageIndex, fetchMore, router])
     const baseClasses = classNames(styles.base, {
         [styles.base__withOverlay]: !!userToEdit,
     })

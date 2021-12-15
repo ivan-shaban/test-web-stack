@@ -12,6 +12,7 @@ type User
     id: ID!
     name: String!
     dob: AWSDate!
+    image: String!
     address: String!
-    description: String
+    description: String!
 }

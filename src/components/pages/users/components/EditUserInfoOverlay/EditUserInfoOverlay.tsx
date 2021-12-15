@@ -7,7 +7,6 @@ import {
 } from 'react'
 import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
-import {User} from 'graphql/generated/type-graphql/models/User'
 import styles from './EditUserInfoOverlay.module.scss'
 import {createPortal} from 'react-dom'
 import {
@@ -16,16 +15,14 @@ import {
 } from '../../../../Button/Button'
 import {Input} from '../../../../Input/Input'
 import {Layout} from '../../../../Layout/Layout'
-import {useMutation} from '@apollo/client'
-import {
-    DELETE_USER_MUTATION,
-    GET_ALL_USERS_QUERY,
-    UPDATE_USER_MUTATION,
-} from '../../../../../lib/apis/graphql'
-import {UpdateUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/UpdateUserArgs'
 
 import {GoogleMap} from '../GoogleMap/GoogleMap'
-import {DeleteUserArgs} from 'graphql/generated/type-graphql/resolvers/crud/User/args/DeleteUserArgs'
+import {User} from '../../../../../API'
+import {API} from 'aws-amplify'
+import {
+    deleteUser,
+    updateUser,
+} from '../../../../../graphql/mutations'
 
 export interface Props {
     readonly user: User
@@ -38,22 +35,25 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
     const [userAddress, setUserAddress] = useState(user.address)
     const [userDescription, setUserDescription] = useState(user.description)
     const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
+    const [userUpdateErrorMessage, setUserUpdateErrorMessage] = useState<any | null>(null)
+    const [deleteUserErrorMessage, setDeleteUserErrorMessage] = useState<any | null>(null)
     const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
     const saveButtonEnabled = username !== user.name || userAddress !== user.address || userDescription !== user.description
-    const [updateUser, {loading: userUpdateInProgress, error: userUpdateError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
-        awaitRefetchQueries: true,
-        refetchQueries: [
-            GET_ALL_USERS_QUERY,
-            'Users',
-        ],
-    })
-    const [deleteUser, {loading: userDeleteInProgress, error: deleteUserError}] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
-        awaitRefetchQueries: true,
-        refetchQueries: [
-            GET_ALL_USERS_QUERY,
-            'Users',
-        ],
-    })
+
+    // const [updateUser, {loading: userUpdateInProgress, error: userUpdateError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+    //     awaitRefetchQueries: true,
+    //     refetchQueries: [
+    //         GET_ALL_USERS_QUERY,
+    //         'Users',
+    //     ],
+    // })
+    // const [deleteUser, {loading: userDeleteInProgress, error: deleteUserError}] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
+    //     awaitRefetchQueries: true,
+    //     refetchQueries: [
+    //         GET_ALL_USERS_QUERY,
+    //         'Users',
+    //     ],
+    // })
     const layoutClasses = classNames(styles.layout, {
         [styles.layout__hasScroll]: hasScroll,
     })
@@ -64,40 +64,38 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
 
     const handleUserUpdate = useCallback(async () => {
         try {
-            await updateUser({
+            await API.graphql({
+                query: updateUser,
                 variables: {
-                    data: {
-                        name: {
-                            set: username,
-                        },
-                        address: {
-                            set: userAddress,
-                        },
-                        description: {
-                            set: userDescription,
-                        },
-                    },
-                    where: {
+                    input: {
                         id: user.id,
-                    },
-                },
+                        name: username,
+                        address: userAddress,
+                        description: userDescription,
+                    }
+                }
             })
             handleClose()
-        } catch (e) {
+        } catch (error: any) {
+            console.error(...error.errors);
+            setUserUpdateErrorMessage(error.errors[0].message)
         }
     }, [updateUser, username, userAddress, userDescription, user.id])
 
     const handleUserDelete = useCallback(async () => {
         try {
-            await deleteUser({
+            await API.graphql({
+                query: deleteUser,
                 variables: {
-                    where: {
+                    input: {
                         id: user.id,
-                    },
-                },
+                    }
+                }
             })
             handleClose()
-        } catch (e) {
+        } catch (error: any) {
+            console.error(...error.errors);
+            setDeleteUserErrorMessage(error.errors[0].message)
         }
     }, [deleteUser, user.id])
 
@@ -130,8 +128,8 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                 <div className={styles.base}>
                     <header className={styles.header}>
                         <p className={styles.title}>Edit user</p>
-                        {!!userUpdateError && <p className={styles.error}>Error: Cannot update user :(</p>}
-                        {!!deleteUserError && <p className={styles.error}>Error: Cannot delete user :(</p>}
+                        {!!userUpdateErrorMessage && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!deleteUserErrorMessage && <p className={styles.error}>Error: Cannot delete user :(</p>}
                         {!!mapErrorMessage && <p className={styles.error}>Error: {mapErrorMessage} :(</p>}
                     </header>
                     <main className={styles.main}>
@@ -170,21 +168,21 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
                         <Button
                             className={styles.deleteButton}
                             type={ButtonType.Danger}
-                            isDisabled={userUpdateInProgress || userDeleteInProgress}
+                            // isDisabled={userUpdateInProgress || userDeleteInProgress}
                             onClick={handleUserDelete}
                         >
                             DELETE
                         </Button>
                         <Button
                             className={styles.saveButton}
-                            isDisabled={(userUpdateInProgress || userDeleteInProgress) || !saveButtonEnabled}
+                            // isDisabled={(userUpdateInProgress || userDeleteInProgress) || !saveButtonEnabled}
                             onClick={handleUserUpdate}
                         >
                             SAVE
                         </Button>
                         <Button
                             className={styles.cancelButton}
-                            isDisabled={userUpdateInProgress || userDeleteInProgress}
+                            // isDisabled={userUpdateInProgress || userDeleteInProgress}
                             onClick={handleClose}
                         >
                             CANCEL

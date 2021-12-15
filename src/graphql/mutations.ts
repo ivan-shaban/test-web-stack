@@ -11,6 +11,7 @@ export const createUser = /* GraphQL */ `
       id
       name
       dob
+      image
       address
       description
       createdAt
@@ -27,6 +28,7 @@ export const updateUser = /* GraphQL */ `
       id
       name
       dob
+      image
       address
       description
       createdAt
@@ -43,6 +45,7 @@ export const deleteUser = /* GraphQL */ `
       id
       name
       dob
+      image
       address
       description
       createdAt

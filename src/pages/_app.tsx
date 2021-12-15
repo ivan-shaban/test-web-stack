@@ -1,22 +1,26 @@
 import '../styles/globals.css'
 import Head from 'next/head'
 import type {AppProps} from 'next/app'
-import {useApollo} from '../lib/apollo'
-import {ApolloProvider} from '@apollo/client'
+import {AmplifyAuthenticator} from '@aws-amplify/ui-react/legacy'
+import {Amplify} from 'aws-amplify'
+
+// hack to expose `Amplify` & its categories on `window` for e2e testing
+if (typeof window !== 'undefined') {
+    // @ts-ignore
+    window['Amplify'] = Amplify
+}
 
 function MyApp({Component, pageProps}: AppProps) {
-    const apolloClient = useApollo(pageProps)
-
     return (
         <>
             <Head>
-               <title>Test app: Nextjs + Prisma + GraphQL + SQLite</title>
+                <title>Test app: Nextjs + Prisma + GraphQL + SQLite</title>
                 <meta name="viewport"
                       content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"/>
-             </Head>
-            <ApolloProvider client={apolloClient}>
+            </Head>
+            <AmplifyAuthenticator>
                 <Component {...pageProps} />
-            </ApolloProvider>
+            </AmplifyAuthenticator>
         </>
     )
 }
