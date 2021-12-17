@@ -13,6 +13,7 @@ export const getUser = /* GraphQL */ `
       description
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -32,6 +33,7 @@ export const listUsers = /* GraphQL */ `
         description
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }

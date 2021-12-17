@@ -12,8 +12,8 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^2.1.5",
-    "aws-amplify": "^4.3.10",
+    "@aws-amplify/ui-react": "1.2.26",
+    "aws-amplify": "3.4.3",
     "axios": "^0.24.0",
     "class-validator": "^0.13.2",
     "classnames": "2.2.6",
