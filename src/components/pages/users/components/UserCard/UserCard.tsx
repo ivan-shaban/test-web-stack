@@ -25,7 +25,7 @@ export const UserCardOriginal: FC<Props> = ({user, isDisabled, onClick}) => {
         <div className={baseClasses} onClick={handleClick}>
             <img
                 className={styles.editIcon}
-                src="/static/icons/edit-icon.svg"
+                src="/assets/icons/edit-icon.svg"
                 alt="edit icon"
                 draggable="false"
             />

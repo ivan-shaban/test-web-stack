@@ -9,7 +9,7 @@ exports[`snapshots default 1`] = `
     alt="edit icon"
     className="editIcon"
     draggable="false"
-    src="/static/icons/edit-icon.svg"
+    src="/assets/icons/edit-icon.svg"
   />
   <img
     alt="name's avatar"
@@ -28,7 +28,7 @@ exports[`snapshots default 1`] = `
     <p
       className="createdTitle"
     >
-      created 
+      created
       <span
         className="createdValue"
       >
@@ -53,7 +53,7 @@ exports[`snapshots with disabled state 1`] = `
     alt="edit icon"
     className="editIcon"
     draggable="false"
-    src="/static/icons/edit-icon.svg"
+    src="/assets/icons/edit-icon.svg"
   />
   <img
     alt="name's avatar"
@@ -72,7 +72,7 @@ exports[`snapshots with disabled state 1`] = `
     <p
       className="createdTitle"
     >
-      created 
+      created
       <span
         className="createdValue"
       >
