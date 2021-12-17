@@ -2,14 +2,11 @@ projects:
   superformulatesttask:
     schemaPath: src/graphql/schema.json
     includes:
-      - src/graphql/**/*.ts
+      - src/lib/apis/graphql/**/*.ts
     excludes:
       - ./amplify/**
     extensions:
       amplify:
         codeGenTarget: typescript
-        generatedFileName: src/API.ts
-        docsFilePath: src/graphql
-extensions:
-  amplify:
-    version: 3
+        generatedFileName: src/lib/apis/graphql/API.ts
+        docsFilePath: src/lib/apis/graphql
