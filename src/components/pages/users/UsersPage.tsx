@@ -4,7 +4,6 @@ import {
     memo,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
     useState,
 } from 'react'
@@ -33,22 +32,35 @@ export const UsersPageOriginal: FC<Props> = () => {
     const baseRef = useRef<HTMLDivElement>(null)
 
     const {
-        data, fetchMore
+        data, fetchMore, refetch,
     } = useQuery<{ users: User[] }, FindManyUserArgs>(GET_ALL_USERS_QUERY, {
         errorPolicy: 'all',
         notifyOnNetworkStatusChange: true,
         variables: {
             // @ts-ignore
             take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
+            where: filterValue ? {
+                OR: [
+                    {
+                        address: {
+                            contains: filterValue,
+                        },
+                    },
+                    {
+                        name: {
+                            contains: filterValue,
+                        },
+                    },
+                    {
+                        description: {
+                            contains: filterValue,
+                        },
+                    },
+                ],
+            }: undefined,
         },
     })
-    const filteredData = useMemo(() => {
-        return filterValue ? data?.users.filter(({name, description, address}) => {
-            return name.toLowerCase().includes(filterValue) ||
-                description.toLowerCase().includes(filterValue) ||
-                address?.toLowerCase().includes(filterValue)
-        }) : data?.users
-    }, [filterValue, data?.users])
+    const filteredData = data?.users
     // somehow `loading \ networkStatus` from grahpql doesn't work well, despite `notifyOnNetworkStatusChange: true`
     const [isLoading, setLoadingState] = useState(!data?.users?.length)
 
@@ -97,6 +109,10 @@ export const UsersPageOriginal: FC<Props> = () => {
         }
     }, [baseRef.current, filteredData])
 
+    useEffect(() => {
+        refetch()
+    }, [filterValue, refetch])
+
     return (
         <Layout isAbsolute className={styles.layout} ref={baseRef}>
             <div className={baseClasses}>
@@ -140,4 +156,5 @@ export const UsersPageOriginal: FC<Props> = () => {
     )
 }
 
+UsersPageOriginal.displayName = 'UsersPage'
 export const UsersPage = memo(UsersPageOriginal)

@@ -33,21 +33,27 @@ export interface Props {
     readonly onClose: () => void
 }
 
-export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) => {
+export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose}) => {
     const [username, setUserName] = useState(user.name)
     const [userAddress, setUserAddress] = useState(user.address)
     const [userDescription, setUserDescription] = useState(user.description)
     const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
     const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
     const saveButtonEnabled = username !== user.name || userAddress !== user.address || userDescription !== user.description
-    const [updateUser, {loading: userUpdateInProgress, error: userUpdateError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
+    const [updateUser, {
+        loading: userUpdateInProgress,
+        error: userUpdateError,
+    }] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
         awaitRefetchQueries: true,
         refetchQueries: [
             GET_ALL_USERS_QUERY,
             'Users',
         ],
     })
-    const [deleteUser, {loading: userDeleteInProgress, error: deleteUserError}] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
+    const [deleteUser, {
+        loading: userDeleteInProgress,
+        error: deleteUserError,
+    }] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
         awaitRefetchQueries: true,
         refetchQueries: [
             GET_ALL_USERS_QUERY,
@@ -194,4 +200,8 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
             </Layout>
         </CSSTransition>
     ), document.getElementById('overlay-container')!)
-})
+}
+
+EditUserInfoOverlayOriginal.displayName = 'EditUserInfoOverlay'
+
+export const EditUserInfoOverlay = memo(EditUserInfoOverlayOriginal)

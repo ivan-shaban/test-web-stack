@@ -20,6 +20,7 @@ const createApolloClient = () => {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: ApolloLink.from([
+            // @ts-ignore
             onError(({graphQLErrors, networkError}) => {
                 if (graphQLErrors)
                     graphQLErrors.forEach(({message, locations, path}) =>

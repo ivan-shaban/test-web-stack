@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const GET_ALL_USERS_QUERY = gql`
-    query Users($take: Int) {
-        users(take: $take) {
+    query Query($take: Int, $where: UserWhereInput) {
+        users(take: $take, where: $where) {
             id
             name
             dob
