@@ -4,7 +4,6 @@ import {
     memo,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
     useState,
 } from 'react'
@@ -139,4 +138,5 @@ export const UsersPageOriginal: FC<Props> = ({users}) => {
     )
 }
 
+UsersPageOriginal.displayName = 'UsersPage'
 export const UsersPage = memo(UsersPageOriginal)

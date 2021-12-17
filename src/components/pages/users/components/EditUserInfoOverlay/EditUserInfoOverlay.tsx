@@ -30,7 +30,7 @@ export interface Props {
     readonly onClose: () => void
 }
 
-export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) => {
+export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose}) => {
     const [username, setUserName] = useState(user.name)
     const [userAddress, setUserAddress] = useState(user.address)
     const [userDescription, setUserDescription] = useState(user.description)
@@ -192,4 +192,8 @@ export const EditUserInfoOverlay: FC<Props> = memo(({user, hasScroll, onClose}) 
             </Layout>
         </CSSTransition>
     ), document.getElementById('overlay-container')!)
-})
+}
+
+EditUserInfoOverlayOriginal.displayName = 'EditUserInfoOverlay'
+
+export const EditUserInfoOverlay = memo(EditUserInfoOverlayOriginal)

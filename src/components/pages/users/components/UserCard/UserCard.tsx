@@ -12,7 +12,7 @@ export interface Props {
     readonly onClick: (user: User) => void
 }
 
-export const UserCard: FC<Props> = memo(({user, isDisabled, onClick}) => {
+export const UserCardOriginal: FC<Props> = ({user, isDisabled, onClick}) => {
     const createAt = new Date(user.dob).toLocaleDateString()
     const baseClasses = classNames(styles.base, {
         [styles.base__disabled]: isDisabled,
@@ -42,7 +42,11 @@ export const UserCard: FC<Props> = memo(({user, isDisabled, onClick}) => {
             <p className={styles.description}>{user.description}</p>
         </div>
     )
-}, (prevProps, nextProps) => {
+}
+
+UserCardOriginal.displayName = 'UserCard'
+
+export const UserCard = memo(UserCardOriginal,(prevProps, nextProps) => {
     return prevProps.user.id === nextProps.user.id &&
         prevProps.user.name === nextProps.user.name &&
         prevProps.user.dob === nextProps.user.dob &&

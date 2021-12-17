@@ -17,17 +17,20 @@ export interface Props extends Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLB
     readonly type?: ButtonType
 }
 
-export const Button: FC<Props> = memo(({
-                                           className,
-                                           isDisabled,
-                                           type = ButtonType.Primary,
-                                           children,
-                                           ...restProps
-                                       }) => {
+export const ButtonOriginal: FC<Props> = ({
+                                              className,
+                                              isDisabled,
+                                              type = ButtonType.Primary,
+                                              children,
+                                              ...restProps
+                                          }) => {
     const baseClasses = classNames(styles.base, styles[`base__${type}`], className, {
         [styles.base__disabled]: isDisabled,
     })
     return (
         <button type="button" className={baseClasses} {...restProps}>{children}</button>
     )
-})
+}
+ButtonOriginal.displayName = 'Button'
+
+export const Button = memo(ButtonOriginal)
