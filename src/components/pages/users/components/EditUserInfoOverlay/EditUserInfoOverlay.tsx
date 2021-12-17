@@ -17,12 +17,12 @@ import {Input} from '../../../../Input/Input'
 import {Layout} from '../../../../Layout/Layout'
 
 import {GoogleMap} from '../GoogleMap/GoogleMap'
-import {User} from '../../../../../API'
 import {API} from 'aws-amplify'
+import {User} from '../../../../../lib/apis/graphql/API'
 import {
     deleteUser,
     updateUser,
-} from '../../../../../graphql/mutations'
+} from '../../../../../lib/apis/graphql/mutations'
 
 export interface Props {
     readonly user: User

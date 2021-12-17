@@ -6,8 +6,8 @@ import {GetServerSideProps} from 'next'
 import Amplify, {withSSRContext} from 'aws-amplify'
 import awsconfig from '../aws-exports'
 import {GraphQLResult} from '@aws-amplify/api-graphql'
-import {ListUsersQuery} from '../API'
-import {listUsers} from '../graphql/queries'
+import {listUsers} from '../lib/apis/graphql/queries'
+import {ListUsersQuery} from '../lib/apis/graphql/API'
 
 Amplify.configure({...awsconfig, ssr: true})
 
