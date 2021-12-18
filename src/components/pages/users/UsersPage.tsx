@@ -14,15 +14,20 @@ import {UserCard} from './components/UserCard/UserCard'
 import {Input} from '../../Input/Input'
 import {Button} from '../../Button/Button'
 import {useRouter} from 'next/router'
+import {useQuery} from '@apollo/client'
 import {EditUserInfoOverlay} from './components/EditUserInfoOverlay/EditUserInfoOverlay'
 import {Layout} from '../../Layout/Layout'
-import {User} from '../../../API'
+import {
+    ListUsersQuery,
+    ListUsersQueryVariables,
+    User,
+} from '../../../lib/apis/graphql/API'
+import {getAllUsers} from '../../../lib/apis/graphql'
 
 export interface Props {
-    readonly users: Readonly<User>[]
 }
 
-export const UsersPageOriginal: FC<Props> = ({users}) => {
+export const UsersPageOriginal: FC<Props> = () => {
     const router = useRouter()
     const [filterValue, setFilterValue] = useState('')
     const [userToEdit, setUserToEdit] = useState<User | null>(null)
@@ -30,25 +35,23 @@ export const UsersPageOriginal: FC<Props> = ({users}) => {
     const pageIndex = parseInt(router.query.page as string, 10) || 1
     const baseRef = useRef<HTMLDivElement>(null)
 
-    // const {
-    //     data, fetchMore
-    // } = useQuery<{ users: User[] }, FindManyUserArgs>(GET_ALL_USERS_QUERY, {
-    //     errorPolicy: 'all',
-    //     notifyOnNetworkStatusChange: true,
-    //     variables: {
-    //         // @ts-ignore
-    //         take: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
-    //     },
-    // })
+    const {
+        data, fetchMore, loading: isLoading
+    } = useQuery<ListUsersQuery, ListUsersQueryVariables>(getAllUsers, {
+        errorPolicy: 'all',
+        notifyOnNetworkStatusChange: true,
+        variables: {
+            // @ts-ignore
+            limit: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
+        },
+    })
     const filteredData = useMemo(() => {
-        return filterValue ? users.filter(({name, description, address}) => {
+        return filterValue ? data?.listUsers?.items.filter(({name, description, address}) => {
             return name.toLowerCase().includes(filterValue) ||
                 description.toLowerCase().includes(filterValue) ||
                 address.toLowerCase().includes(filterValue)
-        }) : users
-    }, [filterValue, users])
-    // somehow `loading \ networkStatus` from grahpql doesn't work well, despite `notifyOnNetworkStatusChange: true`
-    const [isLoading, setLoadingState] = useState(!users?.length)
+        }) : data?.listUsers?.items
+    }, [filterValue, data?.listUsers?.items])
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFilterValue(event.currentTarget.value.toLowerCase())
@@ -63,27 +66,20 @@ export const UsersPageOriginal: FC<Props> = ({users}) => {
     }
 
     const handleLoadMoreClick = useCallback(async () => {
-        setLoadingState(true)
-
         const newPageIndex = pageIndex + 1
 
+        // in case if fetch request failed we don't increase page number
+        await fetchMore({
+            variables: {
+                // @ts-ignore
+                limit: newPageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
+            },
+        })
         await router.push({
             query: {page: newPageIndex.toString()},
         }, undefined, {shallow: true})
-        // await fetchMore({
-        //     variables: {
-        //         // @ts-ignore
-        //         take: newPageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
-        //     },
-        // })
-        setLoadingState(false)
+    }, [pageIndex, fetchMore, router])
 
-        // scroll back to load button, to force smooth ux
-        document.getElementById('loadMoreButton')?.scrollIntoView({
-            behavior: 'smooth',
-        })
-    }, [pageIndex, router])
-    // }, [pageIndex, fetchMore, router])
     const baseClasses = classNames(styles.base, {
         [styles.base__withOverlay]: !!userToEdit,
     })
@@ -95,6 +91,13 @@ export const UsersPageOriginal: FC<Props> = ({users}) => {
             setHasScroll(false)
         }
     }, [baseRef, filteredData])
+
+    useEffect(() => {
+        // scroll back to load button only after we get new users, to force smooth ux
+        document.getElementById('loadMoreButton')?.scrollIntoView({
+            behavior: 'smooth',
+        })
+    }, [data?.listUsers?.items.length])
 
     return (
         <Layout isAbsolute className={styles.layout} ref={baseRef}>

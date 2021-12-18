@@ -1,11 +1,18 @@
-export const getAllUsers = /* GraphQL */ `
-    query MyQuery {
-        listUsers {
+import {gql} from '@apollo/client'
+
+export const getAllUsers = gql`
+    query ListUsers(
+        $filter: ModelUserFilterInput
+        $limit: Int
+    ) {
+        listUsers(filter: $filter, limit: $limit) {
             items {
                 id
-                address
-                dob
                 name
+                dob
+                image
+                address
+                description
             }
         }
     }

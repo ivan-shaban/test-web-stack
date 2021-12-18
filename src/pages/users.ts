@@ -3,28 +3,35 @@ import {
     UsersPage,
 } from '../components/pages/users/UsersPage'
 import {GetServerSideProps} from 'next'
-import Amplify, {withSSRContext} from 'aws-amplify'
+import Amplify from 'aws-amplify'
 import awsconfig from '../aws-exports'
-import {GraphQLResult} from '@aws-amplify/api-graphql'
-import {listUsers} from '../lib/apis/graphql/queries'
-import {ListUsersQuery} from '../lib/apis/graphql/API'
+import {
+    ListUsersQuery,
+    ListUsersQueryVariables,
+} from '../lib/apis/graphql/API'
+import {
+    addApolloState,
+    initializeApollo,
+} from '../lib/apollo'
+import {getAllUsers} from '../lib/apis/graphql'
 
 Amplify.configure({...awsconfig, ssr: true})
 
 export default UsersPage
 
-export const getServerSideProps: GetServerSideProps<Props, { page: string }> = async ({query, req}) => {
-    const SSR = withSSRContext({req})
+export const getServerSideProps: GetServerSideProps<Props, { page: string }> = async ({query}) => {
     const pageIndex = parseInt(query.page as string, 10) || 1
+    const apolloClient = initializeApollo()
 
-    const {data} = await (SSR.API.graphql({
-        query: listUsers, variables: {},
-    }) as Promise<GraphQLResult<ListUsersQuery>>)
-    console.log(`>> users`, data);
-
-    return {
-        props: {
-            users: data!.listUsers?.items!,
+    await apolloClient.query<ListUsersQuery, ListUsersQueryVariables>({
+        query: getAllUsers,
+        variables: {
+            // @ts-ignore
+            limit: pageIndex * process.env.NEXT_PUBLIC_USERS_PER_PAGE,
         },
-    }
+    })
+
+    return addApolloState(apolloClient, {
+        props: {},
+    })
 }

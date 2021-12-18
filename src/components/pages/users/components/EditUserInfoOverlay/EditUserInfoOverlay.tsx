@@ -17,12 +17,20 @@ import {Input} from '../../../../Input/Input'
 import {Layout} from '../../../../Layout/Layout'
 
 import {GoogleMap} from '../GoogleMap/GoogleMap'
-import {API} from 'aws-amplify'
-import {User} from '../../../../../lib/apis/graphql/API'
 import {
-    deleteUser,
-    updateUser,
+    DeleteUserMutationVariables,
+    UpdateUserMutationVariables,
+    User,
+} from '../../../../../lib/apis/graphql/API'
+import {
+    deleteUser as deleteUserMutation,
+    updateUser as updateUserMutation,
 } from '../../../../../lib/apis/graphql/mutations'
+import {
+    useMutation,
+    gql,
+} from '@apollo/client'
+import {getAllUsers} from '../../../../../lib/apis/graphql'
 
 export interface Props {
     readonly user: User
@@ -35,25 +43,28 @@ export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose
     const [userAddress, setUserAddress] = useState(user.address)
     const [userDescription, setUserDescription] = useState(user.description)
     const [mapErrorMessage, setMapErrorMessage] = useState<string | null>(null)
-    const [userUpdateErrorMessage, setUserUpdateErrorMessage] = useState<any | null>(null)
-    const [deleteUserErrorMessage, setDeleteUserErrorMessage] = useState<any | null>(null)
     const [playAppearingAnimation, setExitAnimationStatus] = useState(true)
     const saveButtonEnabled = username !== user.name || userAddress !== user.address || userDescription !== user.description
-
-    // const [updateUser, {loading: userUpdateInProgress, error: userUpdateError}] = useMutation<User, UpdateUserArgs>(UPDATE_USER_MUTATION, {
-    //     awaitRefetchQueries: true,
-    //     refetchQueries: [
-    //         GET_ALL_USERS_QUERY,
-    //         'Users',
-    //     ],
-    // })
-    // const [deleteUser, {loading: userDeleteInProgress, error: deleteUserError}] = useMutation<User, DeleteUserArgs>(DELETE_USER_MUTATION, {
-    //     awaitRefetchQueries: true,
-    //     refetchQueries: [
-    //         GET_ALL_USERS_QUERY,
-    //         'Users',
-    //     ],
-    // })
+    const [updateUser, {
+        loading: userUpdateInProgress,
+        error: userUpdateError,
+    }] = useMutation<User, UpdateUserMutationVariables>(gql(updateUserMutation), {
+        awaitRefetchQueries: true,
+        refetchQueries: [
+            getAllUsers,
+            'listUsers',
+        ],
+    })
+    const [deleteUser, {
+        loading: userDeleteInProgress,
+        error: deleteUserError,
+    }] = useMutation<User, DeleteUserMutationVariables>(gql(deleteUserMutation), {
+        awaitRefetchQueries: true,
+        refetchQueries: [
+            getAllUsers,
+            'listUsers',
+        ],
+    })
     const layoutClasses = classNames(styles.layout, {
         [styles.layout__hasScroll]: hasScroll,
     })
@@ -64,38 +75,32 @@ export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose
 
     const handleUserUpdate = useCallback(async () => {
         try {
-            await API.graphql({
-                query: updateUser,
+            await updateUser({
                 variables: {
                     input: {
                         id: user.id,
                         name: username,
                         address: userAddress,
                         description: userDescription,
-                    }
-                }
+                    },
+                },
             })
             handleClose()
-        } catch (error: any) {
-            console.error(...error.errors);
-            setUserUpdateErrorMessage(error.errors[0].message)
+        } catch (e) {
         }
     }, [updateUser, username, userAddress, userDescription, user.id])
 
     const handleUserDelete = useCallback(async () => {
         try {
-            await API.graphql({
-                query: deleteUser,
+            await deleteUser({
                 variables: {
                     input: {
                         id: user.id,
-                    }
-                }
+                    },
+                },
             })
             handleClose()
-        } catch (error: any) {
-            console.error(...error.errors);
-            setDeleteUserErrorMessage(error.errors[0].message)
+        } catch (e) {
         }
     }, [deleteUser, user.id])
 
@@ -128,8 +133,8 @@ export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose
                 <div className={styles.base}>
                     <header className={styles.header}>
                         <p className={styles.title}>Edit user</p>
-                        {!!userUpdateErrorMessage && <p className={styles.error}>Error: Cannot update user :(</p>}
-                        {!!deleteUserErrorMessage && <p className={styles.error}>Error: Cannot delete user :(</p>}
+                        {!!userUpdateError && <p className={styles.error}>Error: Cannot update user :(</p>}
+                        {!!deleteUserError && <p className={styles.error}>Error: Cannot delete user :(</p>}
                         {!!mapErrorMessage && <p className={styles.error}>Error: {mapErrorMessage} :(</p>}
                     </header>
                     <main className={styles.main}>
@@ -168,21 +173,21 @@ export const EditUserInfoOverlayOriginal: FC<Props> = ({user, hasScroll, onClose
                         <Button
                             className={styles.deleteButton}
                             type={ButtonType.Danger}
-                            // isDisabled={userUpdateInProgress || userDeleteInProgress}
+                            isDisabled={userUpdateInProgress || userDeleteInProgress}
                             onClick={handleUserDelete}
                         >
                             DELETE
                         </Button>
                         <Button
                             className={styles.saveButton}
-                            // isDisabled={(userUpdateInProgress || userDeleteInProgress) || !saveButtonEnabled}
+                            isDisabled={(userUpdateInProgress || userDeleteInProgress) || !saveButtonEnabled}
                             onClick={handleUserUpdate}
                         >
                             SAVE
                         </Button>
                         <Button
                             className={styles.cancelButton}
-                            // isDisabled={userUpdateInProgress || userDeleteInProgress}
+                            isDisabled={userUpdateInProgress || userDeleteInProgress}
                             onClick={handleClose}
                         >
                             CANCEL
