@@ -8,14 +8,15 @@ import {mount} from 'enzyme'
 
 const defaultProps: Props = {
     user: {
+        __typename: 'User',
         address: 'address',
         description: 'description',
-        id: 0,
-        dob: new Date('1990-01-01'),
+        id: '0',
+        dob: '1990-01-01',
         name: 'name',
         image: 'image',
-        createdAt: new Date('1999-01-01'),
-        updatedAt: new Date('1999-02-01'),
+        createdAt: '2021-12-17T23:01:26.540Z',
+        updatedAt: '2021-12-18T13:56:22.311Z',
     },
     onClick: jest.fn(),
 }

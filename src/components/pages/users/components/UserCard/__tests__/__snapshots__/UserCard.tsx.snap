@@ -28,7 +28,7 @@ exports[`snapshots default 1`] = `
     <p
       className="createdTitle"
     >
-      created
+      created 
       <span
         className="createdValue"
       >
@@ -72,7 +72,7 @@ exports[`snapshots with disabled state 1`] = `
     <p
       className="createdTitle"
     >
-      created
+      created 
       <span
         className="createdValue"
       >
